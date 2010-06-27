@@ -6,6 +6,7 @@ class CreateStates < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_column :users, :state_id, :integer
   end
 
   def self.down

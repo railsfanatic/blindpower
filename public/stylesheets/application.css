@@ -80,18 +80,30 @@ a {
   list-style: disc;
 }
 
-#user_nav {
+#login {
 	text-align: center;
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+#user_nav {
+	color: #333;
 	font-size: 12px;
 }
 
-#user_nav a {
-	border: 1px solid black;
-	padding: 5px;
-	margin: 5px;
+
+#user_nav ul {
+	list-style: none;
+	text-align: center;
 }
 
-#user_nav a:hover {
+#user_nav li {
+	border: 1px solid black;
+	padding: 5px;
+	display: inline;
+}
+
+#user_nav li:hover {
 	background-color: yellow;
 }
 

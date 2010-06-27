@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_filter :authenticate, :except => [:index, :show]
   
   def index
-    @posts = Post.recent(20, :approved => true)
+    @posts = Post.approved(20)
     @rejected_posts = Post.recent(100, :approved => false) if admin?
     @post_months = @posts.group_by { |p| p.created_at.beginning_of_day }
   end

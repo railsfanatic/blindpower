@@ -18,12 +18,12 @@ class Post < ActiveRecord::Base
     end
   end
   
-  def self.approved
-    all(:conditions => { :approved => true }, :order => "created_at DESC")
+  def self.approved(limit = 0, conditions = nil)
+    recent(limit, { :approved => true, :users => { :author => true } })
   end
   
   def self.recent(limit, conditions = nil)
-    all(:limit => limit, :conditions => conditions, :order => "created_at DESC")
+    all(:limit => limit, :joins => :user, :conditions => conditions, :order => "created_at DESC")
   end
   
   def request=(request)

@@ -21,7 +21,7 @@ function countrySelected() {
 }
 
 document.observe('dom:loaded', function() {
-  $('state_field').hide();
+  if ($('user_country_id').getValue() == 0) countrySelected();
   $('user_country_id').observe('change', countrySelected);
 })
 

@@ -5,6 +5,7 @@ class CreateCountries < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_column :users, :country_id, :integer
   end
 
   def self.down

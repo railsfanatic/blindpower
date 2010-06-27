@@ -4,8 +4,6 @@ class AddFieldsToUser < ActiveRecord::Migration
     add_column :users, :condition_id, :integer
     add_column :users, :first_name, :string
     add_column :users, :last_name, :string
-    add_column :users, :country_id, :string
-    add_column :users, :state_id, :string
     add_column :users, :address, :string
     add_column :users, :city, :string
     add_column :users, :zip_code, :string

@@ -1,0 +1,9 @@
+<% form_for @comment do |f| %>
+  <%= f.error_messages %>
+	<%= f.hidden_field :post_id %>
+  <p>
+    <%= f.label :content, "Add your comment:" %><br />
+    <%= f.text_area :content %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

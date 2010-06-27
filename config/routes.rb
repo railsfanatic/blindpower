@@ -1,10 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :comments, :collection => { :destroy_multiple => :delete }, :member => { :approve => :put, :reject => :put }
+
   map.login "login", :controller => "user_sessions", :action => "new"
   map.logout "logout", :controller => "user_sessions", :action => "destroy"
   
   map.resources :user_sessions
 
-  map.resources :posts
+  map.resources :posts, :has_many => :comments, :shallow => :true
 
   map.resources :users
 

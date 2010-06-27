@@ -16,5 +16,13 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %>
   </p>
+<% if @user.new_record? %>
+	<p>
+		<label for="my_number">
+		To prevent spam, please type the number
+		<%= session[:captcha_value].en.numwords %>.</label><br />
+		<%= text_field_tag "my_number" %>
+	<p>
+<% end %>
   <p><%= f.submit %></p>
 <% end %>

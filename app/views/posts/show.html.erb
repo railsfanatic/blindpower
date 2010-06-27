@@ -1,17 +1,32 @@
-<% title "Post" %>
+<% title @post.title %>
 
 <p>
-  <strong>User:</strong>
-  <%=h @post.user_id %>
+	By <strong><%= link_to @post.user.username, @post.user %></strong>, <%=h @post.created_at.strftime("%B %d, %Y %I:%M %p") %>
 </p>
+
 <p>
-  <strong>Title:</strong>
-  <%=h @post.title %>
+	<%= markdown(@post.body) %>
 </p>
+
 <p>
-  <strong>Body:</strong>
-  <%=h @post.body %>
+	<strong>Keywords:</strong> 
+	<% @post.tags.each do |tag| %>
+		<%= tag.name %>,
+	<% end %>
 </p>
+
+<% unless @post.comments.empty? %>
+  <h4 id="comments_count">
+    <%= pluralize @post.comments.approved.size, 'comment' %>
+  </h4>
+  <div id="comments">
+    <%= render @post.comments.approved %>
+  </div>
+<% end %>
+
+<div>
+  <%= render :partial => 'comments/form' %>
+</div>
 
 <p>
   <%= link_to "Edit", edit_post_path(@post) %> |

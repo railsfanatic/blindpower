@@ -10,8 +10,15 @@
     <div id="container">
 			<h1 id="title">Blind Power!</h1>
 			<div id="user_nav">
+				<% if current_user %>
+					<p>
+						Logged in as: <%= current_user.username %>
+						<% if admin? %>(Moderator)<% end %>
+					</p>
+				<% end %>
 				<%= link_to "Posts", posts_path %>
 				<% if current_user %>
+					<%= link_to "New Post", new_post_path %>
 					<%= link_to "Edit Profile", edit_user_path(:current) %>
 					<%= link_to "Logout", logout_path %>
 				<% else %>

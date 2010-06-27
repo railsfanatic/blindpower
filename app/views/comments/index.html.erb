@@ -1,0 +1,20 @@
+<% title "Recent Comments" %>
+
+<%= render :partial => "comment", :collection => @approved_comments %>
+
+<% if admin? %>
+	<% form_tag destroy_multiple_comments_path, :method => :delete do %>
+		<h3>Rejected Comments</h3>
+		<table>
+		<% for comment in @rejected_comments %>
+			<tr>
+				<td><%= check_box_tag "comment_ids[]", comment.id, true, :id => "comment_#{comment.id}" %></td>
+				<td><label for="comment_<%= comment.id %>"><%=h truncate(comment.content, 100) %></label></td>
+				<td><%= link_to "not spam", approve_comment_path(comment), :confirm => "Approve comment: are you sure?", :method => :put %></td>
+			</tr>
+		<% end %>
+		</table>
+		<p><%= submit_tag "Destroy Checked" %></p>
+	<% end %>
+<% end %>
+

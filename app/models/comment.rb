@@ -1,11 +1,10 @@
-class Post < ActiveRecord::Base
-  attr_accessible :user_id, :title, :body, :tag_ids
+class Comment < ActiveRecord::Base
+  attr_accessible :content, :user_id, :post_id
+  belongs_to :post
   belongs_to :user
-  has_and_belongs_to_many :tags
-  has_many :comments
-  acts_as_list
-  
+  validates_presence_of :content
   before_create :check_for_spam
+  acts_as_list :scope => :post
   
   def self.approved
     all(:conditions => { :approved => true }, :order => "created_at DESC")
@@ -36,7 +35,7 @@ class Post < ActiveRecord::Base
       :comment_author => user.username,
       :comment_author_email => user.email,
       :comment_author_url => nil,
-      :comment_content => body
+      :comment_content => content
     }
   end
   

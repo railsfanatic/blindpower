@@ -1,13 +1,19 @@
 class UsersController < ApplicationController
-  before_filter :authenticate, :except => [:new, :create]
+  before_filter :authenticate, :except => [:new, :create, :show]
   
   def new
     @user = User.new
+    session[:captcha_value] = 10 + rand(90)
   end
   
   def create
     @user = User.new(params[:user])
-    if @user.save
+    captcha_value = session[:captcha_value]
+    session[:captcha_value] = 10 + rand(90)
+    if params[:my_number].to_i != captcha_value
+      @user.errors.add "Human validation"
+      render :action => 'new'
+    elsif @user.save
       flash[:notice] = "Registration successful!"
       redirect_to root_url
     else
@@ -27,5 +33,9 @@ class UsersController < ApplicationController
     else
       render :action => 'edit'
     end
+  end
+  
+  def show
+    @user = User.find(params[:id])
   end
 end

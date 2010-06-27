@@ -1,10 +1,6 @@
 <% form_for @post do |f| %>
   <%= f.error_messages %>
   <p>
-    <%= f.label :username %><br />
-    <%= f.label current_user.username %>
-  </p>
-  <p>
     <%= f.label :title %><br />
     <%= f.text_field :title %>
   </p>
@@ -12,5 +8,19 @@
     <%= f.label :body %><br />
     <%= f.text_area :body %>
   </p>
+	<h3>Keywords:</h3>
+	<p>
+		<% Tag.all(:order => "name").each do |tag| %>
+			<div>
+				<%= check_box_tag "post[tag_ids][]", tag.id, @post.tags.include?(tag), :id => "tag_#{tag.id}" %>
+				<label for="tag_<%= tag.id %>"><%= tag.name %></label>
+			</div>
+		<% end %>
+		<div>
+			<label for="new_tag_name">suggest new keywords, separated by commas: </label>
+			<%= text_field_tag "new_tag_name" %>
+		</div>
+	</p>
+
   <p><%= f.submit %></p>
 <% end %>

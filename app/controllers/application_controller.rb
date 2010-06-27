@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
-  filter_parameter_logging :password
+  filter_parameter_logging :password, :password_confirmation
   
-  helper_method :current_user
+  helper_method :current_user, :admin?
   
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
@@ -25,5 +25,9 @@ class ApplicationController < ActionController::Base
       session[:url] = request.url
       redirect_to login_url
     end
+  end
+  
+  def admin?
+    current_user && current_user.admin?
   end
 end

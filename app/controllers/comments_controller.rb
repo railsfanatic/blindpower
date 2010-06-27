@@ -44,7 +44,7 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     @comment.destroy
     flash[:notice] = "Successfully destroyed comment."
-    redirect_to comments_url
+    redirect_to comments_path
   end
   
   def destroy_multiple
@@ -54,18 +54,18 @@ class CommentsController < ApplicationController
     else
       flash[:error] = "No comments selected."
     end
-    redirect_to comments_url
+    redirect_to comments_path
   end
   
   def approve
     @comment = Comment.find(params[:id])
     @comment.mark_as_ham!
-    redirect_to comments_url
+    redirect_to comments_path
   end
 
   def reject
     @comment = Comment.find(params[:id])
     @comment.mark_as_spam!
-    redirect_to comments_url
+    redirect_to comments_path
   end
 end

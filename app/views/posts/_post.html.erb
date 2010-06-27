@@ -1,0 +1,23 @@
+<div>
+	<%= post.created_at.strftime("%I:%M %p") %>
+	(<%= post.user.username %>)
+	<strong><%= link_to post.title, post %></strong>
+	<div>
+	<%= markdown h(truncate(post.body, 500, '...')) %>
+	</div>
+	<div>
+		<%= link_to "#{post.comments.count} comments.", post %>
+	</div>
+	<% if (admin? || app_admin?) && post.deleted_at %>
+		<p>
+		Deleted by <%= post.deleted_by_user.username %> |
+		<%= link_to "Recover", recover_post_path(post), :confirm => 'Re-publish this deleted post?', :method => :put %>
+		<% if app_admin? %>
+			| <%= check_box_tag "post_ids[]", post.id, true, :id => "destroy_#{post.id}" %>
+			<label for="destroy_<%= post.id %>"><strong>Destroy</strong></label>
+		<% end %>
+		</p>
+	<% elsif admin? %>
+		<p><%= link_to "Delete", post, :confirm => 'Really delete this post?', :method => :delete %></p>
+	<% end %>
+</div>

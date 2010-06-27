@@ -1,8 +1,9 @@
 class Post < ActiveRecord::Base
   attr_accessible :user_id, :title, :body, :tag_ids, :new_tag_names
   belongs_to :user
+  belongs_to :deleted_by_user, :class_name => "User", :foreign_key => "deleted_by"
   has_and_belongs_to_many :tags
-  has_many :comments
+  has_many :comments, :dependent => :delete_all
   acts_as_list
   attr_accessor :new_tag_names
   
@@ -18,12 +19,16 @@ class Post < ActiveRecord::Base
     end
   end
   
-  def self.approved(limit = 0, conditions = nil)
-    recent(limit, { :approved => true, :users => { :author => true } })
+  def self.recent(limit = nil, conditions = nil)
+    all(:limit => limit, :joins => :user, :conditions => conditions, :order => "created_at DESC")
   end
   
-  def self.recent(limit, conditions = nil)
-    all(:limit => limit, :joins => :user, :conditions => conditions, :order => "created_at DESC")
+  def self.approved(limit = 100, conditions = nil)
+    recent(limit, { :approved => true, :deleted_at => nil, :users => { :author => true } } )
+  end
+  
+  def self.deleted(limit = 100)
+    recent(limit, "deleted_at IS NOT NULL" )
   end
   
   def request=(request)

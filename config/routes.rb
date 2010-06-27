@@ -6,9 +6,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :user_sessions
 
-  map.resources :posts, :has_many => :comments, :shallow => :true
+  map.resources :posts, :has_many => :comments, :shallow => :true, :collection => { :destroy_multiple => :delete }, :member => { :recover => :put }
 
-  map.resources :users
+  map.resources :users, :collection => { :update_multiple => :put }
 
   # The priority is based upon order of creation: first created -> highest priority.
 

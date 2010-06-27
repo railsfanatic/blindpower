@@ -2,15 +2,15 @@
 
 <p>
   <strong>User:</strong>
-  <%=h @comment.user_id %>
+  <%=h @comment.user.username %>
 </p>
 <p>
   <strong>Post:</strong>
-  <%=h @comment.post_id %>
+  <%=h @comment.post.title %>
 </p>
 <p>
   <strong>Comment:</strong>
-  <%=h @comment.comment %>
+  <%=h @comment.content %>
 </p>
 
 <p>

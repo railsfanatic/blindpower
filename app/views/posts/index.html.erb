@@ -1,16 +1,18 @@
-<% title "Posts" %>
+<% title "Blog" %>
 
 <% @post_months.each do |month, posts| %>
 	<h3><%= month.strftime("%A, %B %e") %></h3>
-	<% for post in posts %>
-	<p>
-		<%= post.created_at.strftime("%I:%M %p") %>
-		(<%= post.user.username %>)
-		<strong><%= link_to post.title, post %></strong>
-		<div>
-		<%= post.body %>
-		</div>
-	</p>
-	<hr />
+	
+	<%= render posts %>
+	
+<% end %>
+
+<% if app_admin? && !@deleted_posts.empty? %>
+	<h3>Deleted Posts</h3>
+	
+	<% form_tag destroy_multiple_posts_path, :method => :delete do %>
+	<%= render @deleted_posts %>
+	<p><%= submit_tag "Destroy Selected", :confirm => "Permanently destroy all selected posts?" %></p>
 	<% end %>
 <% end %>
+

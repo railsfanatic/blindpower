@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100627054655) do
+ActiveRecord::Schema.define(:version => 20100627155621) do
 
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
@@ -37,10 +37,13 @@ ActiveRecord::Schema.define(:version => 20100627054655) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
-    t.boolean  "approved",   :default => true, :null => false
+    t.boolean  "approved",   :default => true,  :null => false
     t.string   "user_ip"
     t.string   "user_agent"
     t.string   "referer"
+    t.boolean  "deleted",    :default => false, :null => false
+    t.datetime "deleted_at"
+    t.integer  "deleted_by"
   end
 
   create_table "posts_tags", :id => false, :force => true do |t|
@@ -93,7 +96,7 @@ ActiveRecord::Schema.define(:version => 20100627054655) do
     t.string   "time_zone"
     t.integer  "country_id"
     t.integer  "state_id"
-    t.boolean  "author"
+    t.boolean  "author",              :default => false, :null => false
   end
 
 end

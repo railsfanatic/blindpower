@@ -1,9 +1,11 @@
 class PostsController < ApplicationController
   before_filter :authenticate, :except => [:index, :show]
+  before_filter :ensure_app_admin, :only => [:destroy_multiple]
   
   def index
     @posts = Post.approved(20)
     @rejected_posts = Post.recent(100, :approved => false) if admin?
+    @deleted_posts = Post.deleted if app_admin?
     @post_months = @posts.group_by { |p| p.created_at.beginning_of_day }
   end
   
@@ -56,15 +58,38 @@ class PostsController < ApplicationController
     end
   end
   
+  def recover
+    @post = Post.find(params[:id])
+    if admin?
+      @post.update_attribute(:deleted_at, nil)
+      flash[:notice] = "Successfully recovered post."
+    else
+      flash[:error] = "Unauthorized!"
+    end
+    redirect_to posts_path
+  end
+  
   def destroy
+    # only marks as deleted -- app_admin can destroy_multiple
     @post = Post.find(params[:id])
     if admin? || @post.user == current_user
-      @post.destroy
-      flash[:notice] = "Successfully destroyed post."
-      redirect_to posts_url
+      @post.update_attribute(:deleted_at, Time.now)
+      @post.update_attribute(:deleted_by, current_user.id)
+      flash[:notice] = "Successfully deleted post."
+      redirect_to posts_path
     else
       flash[:error] = "Unauthorized!"
       redirect_to @post
     end
+  end
+  
+  def destroy_multiple
+    if params[:post_ids].length
+      Post.destroy_all(:id => params[:post_ids])
+      flash[:notice] = "Successfully destroyed #{params[:post_ids].length} Post(s)."
+    else
+      flash[:error] = "No Post(s) selected."
+    end
+    redirect_to posts_path
   end
 end

@@ -1,0 +1,30 @@
+<% title "User Administration" %>
+
+<% form_tag update_multiple_users_path, :method => :put do %>
+
+<table>
+	<tr>
+		<th>Username</th>
+		<th>Full Name</th>
+		<th>Author?</th>
+		<th>Admin?</th>
+		<th>Country</th>
+		<th>State</th>
+		<th>Login</th>
+	</tr>
+<% @users.each do |user| %>
+	<tr>
+		<td><%= link_to user.username, edit_user_path(user) %></td>
+		<td><%= mail_to user.email, user.full_name %></td>
+		<td><%= check_box_tag "author_ids[]", user.id, user.author? %></td>
+		<td><%= check_box_tag "admin_ids[]", user.id, user.admin? %></td>
+		<td><%= user.country.name %></td>
+		<td><%= user.state.name %></td>
+		<td><%= user.current_login_at %></td>
+	</tr>
+<% end %>
+</table>
+
+<p><%= submit_tag "Update Users" %></p>
+
+<% end %>

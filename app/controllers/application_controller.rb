@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :set_user_time_zone
   
-  helper_method :current_user, :admin?
+  helper_method :current_user, :admin?, :app_admin?
   
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
@@ -30,6 +30,17 @@ class ApplicationController < ActionController::Base
   
   def admin?
     current_user && current_user.admin?
+  end
+  
+  def app_admin?
+    current_user.username == "TomG"
+  end
+  
+  def ensure_app_admin
+    unless app_admin?
+      flash[:error] = "Unauthorized!"
+      redirect_to root_url
+    end
   end
   
   private

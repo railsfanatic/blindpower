@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
   before_filter :authenticate, :except => [:new, :create, :show]
+  before_filter :ensure_app_admin, :only => [:index, :update_multiple]
+  
+  def index
+    @users = User.all(:order => "created_at DESC")
+  end
   
   def new
     @user = User.new
@@ -37,5 +42,13 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
+  end
+  
+  def update_multiple
+    User.update_all(:author => false, :admin => false)
+    User.update_all(["author = ?", true], :id => params[:author_ids]) if params[:author_ids]
+    User.update_all(["admin = ?", true], :id => params[:admin_ids]) if params[:admin_ids]
+    flash[:notice] = "Successfully updated users."
+    redirect_to users_path
   end
 end

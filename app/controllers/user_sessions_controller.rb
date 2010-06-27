@@ -1,13 +1,13 @@
 class UserSessionsController < ApplicationController
   def new
     @user_session = UserSession.new
-    session[:captcha_value] = (10 + rand(90)).to_s
+    session[:captcha_value] = 10 + rand(90)
   end
   
   def create
     @user_session = UserSession.new(params[:user_session])
     captcha_value = session[:captcha_value]
-    session[:captcha_value] = (10 + rand(90)).to_s
+    session[:captcha_value] = 10 + rand(90)
     if params[:my_number] != captcha_value
       @user_session.errors.add "Human validation"
       render :action => 'new'

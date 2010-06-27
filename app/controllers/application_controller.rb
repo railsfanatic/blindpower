@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
   
   def app_admin?
-    current_user.username == "TomG"
+    current_user && current_user.username == "TomG"
   end
   
   def ensure_app_admin

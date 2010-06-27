@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     captcha_value = session[:captcha_value]
     session[:captcha_value] = 10 + rand(90)
-    if params[:my_number].to_i != captcha_value
+    if params[:my_number] != captcha_value
       @user.errors.add "Human validation"
       render :action => 'new'
     elsif @user.save

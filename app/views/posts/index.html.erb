@@ -6,8 +6,11 @@
 	<p>
 		<%= post.created_at.strftime("%I:%M %p") %>
 		(<%= post.user.username %>)
-		<strong><%= link_to post.title, post %></strong> - 
+		<strong><%= link_to post.title, post %></strong>
+		<div>
 		<%= post.body %>
+		</div>
 	</p>
+	<hr />
 	<% end %>
 <% end %>

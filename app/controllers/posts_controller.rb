@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_filter :authenticate, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :authenticate, :except => [:index, :show]
   
   def index
     @posts = Post.recent(20, :approved => true)

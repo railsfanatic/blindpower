@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100626235505) do
+ActiveRecord::Schema.define(:version => 20100627041805) do
 
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
@@ -20,6 +20,12 @@ ActiveRecord::Schema.define(:version => 20100626235505) do
     t.string   "referer"
     t.boolean  "approved",   :default => false, :null => false
     t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "countries", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -42,10 +48,18 @@ ActiveRecord::Schema.define(:version => 20100626235505) do
     t.integer "tag_id"
   end
 
+  create_table "states", :force => true do |t|
+    t.integer  "country_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "approved",   :default => false
   end
 
   create_table "users", :force => true do |t|
@@ -60,11 +74,11 @@ ActiveRecord::Schema.define(:version => 20100626235505) do
     t.integer  "condition_id"
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "country_id"
+    t.string   "state_id"
     t.string   "address"
     t.string   "city"
-    t.string   "state"
     t.string   "zip_code"
-    t.string   "country"
     t.string   "phone"
     t.date     "birthdate"
     t.string   "public"
@@ -78,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20100626235505) do
     t.datetime "last_login_at"
     t.string   "current_login_ip"
     t.string   "last_login_ip"
+    t.string   "time_zone"
   end
 
 end

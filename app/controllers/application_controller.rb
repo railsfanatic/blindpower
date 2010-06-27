@@ -4,9 +4,10 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
-
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password, :password_confirmation
+  
+  before_filter :set_user_time_zone
   
   helper_method :current_user, :admin?
   
@@ -29,5 +30,11 @@ class ApplicationController < ActionController::Base
   
   def admin?
     current_user && current_user.admin?
+  end
+  
+  private
+
+  def set_user_time_zone
+    Time.zone = current_user.time_zone if current_user
   end
 end

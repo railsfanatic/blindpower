@@ -16,9 +16,11 @@
 				<label for="tag_<%= tag.id %>"><%= tag.name %></label>
 			</div>
 		<% end %>
+	</p>
+	<p>
 		<div>
-			<label for="new_tag_name">suggest new keywords, separated by commas: </label>
-			<%= text_field_tag "new_tag_name" %>
+			<%= f.label :new_tag_names, "New keywords (separated by commas)" %><br />
+			<%= f.text_field :new_tag_names %>
 		</div>
 	</p>
 

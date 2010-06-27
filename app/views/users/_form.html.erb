@@ -1,3 +1,5 @@
+<% javascript 'dynamic_states' %>
+
 <% form_for @user do |f| %>
   <%= f.error_messages %>
   <p>
@@ -16,6 +18,55 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %>
   </p>
+  <p>
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </p>
+  <p>
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </p>
+	<p>
+		<%= f.label :country_id %><br />
+	  <%= f.collection_select :country_id, Country.all(:order => "name ASC"), :id, :name, :prompt => "Select your country or choose Other if not listed" %>
+	</p>
+	<p id="state_field">
+		<%= f.label :state_id, "State or province" %><br />
+	  <%= f.collection_select :state_id, State.find(:all), :id, :name, :prompt => "Select your state" %>
+	</p>
+  <p>
+    <%= f.label :address %><br />
+    <%= f.text_field :address %>
+  </p>
+  <p>
+    <%= f.label :city, "City or town" %><br />
+    <%= f.text_field :city %>
+  </p>
+  <p>
+    <%= f.label :zip_code, "Zip or postal code" %><br />
+    <%= f.text_field :zip_code %>
+  </p>
+  <p>
+    <%= f.label :phone %><br />
+    <%= f.text_field :phone %>
+  </p>
+  <p>
+    <%= f.label :birthdate_1i, "Date of birth" %><br />
+    <%= f.date_select :birthdate, :include_blank => true %>
+  </p>
+  <p>
+    <%= f.label :intro %><br />
+    <%= f.text_area :intro %>
+  </p>
+  <p>
+    <%= f.label :address %><br />
+    <%= f.text_field :last_name %>
+  </p>
+	<p>
+		<%= f.label :time_zone %><br />
+		<%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Mountain Time (US & Canada)" %>
+	</p>
+
 <% if @user.new_record? %>
 	<p>
 		<label for="my_number">

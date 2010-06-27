@@ -1,11 +1,22 @@
 class Post < ActiveRecord::Base
-  attr_accessible :user_id, :title, :body, :tag_ids
+  attr_accessible :user_id, :title, :body, :tag_ids, :new_tag_names
   belongs_to :user
   has_and_belongs_to_many :tags
   has_many :comments
   acts_as_list
+  attr_accessor :new_tag_names
   
   before_create :check_for_spam
+  after_save :create_tags
+  
+  def create_tags
+    unless new_tag_names.nil?
+      new_tag_names.split(",").each do |name|
+        name.strip!
+        tags.create(:name => name) unless name.blank?
+      end
+    end
+  end
   
   def self.approved
     all(:conditions => { :approved => true }, :order => "created_at DESC")

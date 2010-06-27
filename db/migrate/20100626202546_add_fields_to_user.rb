@@ -4,11 +4,11 @@ class AddFieldsToUser < ActiveRecord::Migration
     add_column :users, :condition_id, :integer
     add_column :users, :first_name, :string
     add_column :users, :last_name, :string
+    add_column :users, :country_id, :string
+    add_column :users, :state_id, :string
     add_column :users, :address, :string
     add_column :users, :city, :string
-    add_column :users, :state, :string
     add_column :users, :zip_code, :string
-    add_column :users, :country, :string
     add_column :users, :phone, :string
     add_column :users, :birthdate, :date
     add_column :users, :public, :string
@@ -20,13 +20,13 @@ class AddFieldsToUser < ActiveRecord::Migration
     remove_column :users, :public
     remove_column :users, :birthdate
     remove_column :users, :phone
-    remove_column :users, :country
     remove_column :users, :zip_code
-    remove_column :users, :state
     remove_column :users, :city
     remove_column :users, :address
     remove_column :users, :last_name
     remove_column :users, :first_name
+    remove_column :users, :state_id
+    remove_column :users, :country_id
     remove_column :users, :condition_id
     remove_column :users, :admin
   end

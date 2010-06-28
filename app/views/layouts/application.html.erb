@@ -11,11 +11,8 @@
 		
     <div id="container">
 			
-			<h1 id="title">
-				Blind Power: The 21st Century Voice of the Blind Community
-			</h1>
       <%- if show_title? -%>
-        <h2 id="subtitle">Blind Power! <%=h yield(:title) %></h2>
+        <h1 id="title">Blind Power: <%=h yield(:title) %></h1>
       <%- end -%>
 			
 			<%- flash.each do |name, msg| -%>
@@ -33,7 +30,7 @@
 				<ul>
 					<li><%= link_to "Home", root_url %></li>
 					<li><%= link_to "Blog", posts_path %></li>
-					<li><%= link_to "Legislation", "##" %></li>
+					<li><%= link_to "Bills", bills_path %></li>
 				<% if current_user %>
 					<li><%= link_to "New Post", new_post_path %></li>
 					<li><%= link_to "Edit Profile", edit_user_path(:current) %></li>

@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  congress: 1
+  bill_type: MyString
+  bill_number: 1
+  title: MyText
+  url: MyString
+  status: MyString
+
+two:
+  congress: 1
+  bill_type: MyString
+  bill_number: 1
+  title: MyText
+  url: MyString
+  status: MyString

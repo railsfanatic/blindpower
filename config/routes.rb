@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :bills
+  
   map.resources :comments, :collection => { :destroy_multiple => :delete }, :member => { :approve => :put, :reject => :put }
   
   map.login "login", :controller => "user_sessions", :action => "new"

@@ -1,0 +1,8 @@
+<% title "Bills" %>
+
+<% @results.each do |result| %>
+
+	<%= link_to result.title, result.link, :target => :blank %>
+	<hr />
+
+<% end %>

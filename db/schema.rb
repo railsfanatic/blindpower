@@ -9,7 +9,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100627155621) do
+ActiveRecord::Schema.define(:version => 20100628213606) do
+
+  create_table "bills", :force => true do |t|
+    t.integer  "congress"
+    t.string   "bill_type"
+    t.integer  "bill_number"
+    t.text     "title"
+    t.string   "url"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "comments", :force => true do |t|
     t.integer  "user_id"

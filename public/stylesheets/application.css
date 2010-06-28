@@ -110,4 +110,10 @@ a {
 
 #title {
 	text-align: center;
+	font-size: 14px;
+}
+
+#subtitle {
+	text-align: center;
+	font-size: 12px;
 }

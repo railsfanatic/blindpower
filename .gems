@@ -2,3 +2,4 @@ rails -v 2.3.8
 authlogic
 bluecloth
 linguistics
+feedzirra

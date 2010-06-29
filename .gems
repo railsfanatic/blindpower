@@ -3,4 +3,4 @@ authlogic
 bluecloth
 linguistics
 feedzirra
-whenenver
+whenenver, :source => "git://github.com/javan/whenever.git"

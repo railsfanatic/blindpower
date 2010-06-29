@@ -23,7 +23,6 @@ Rails::Initializer.run do |config|
   config.gem "bluecloth"
   config.gem "linguistics"
   config.gem "feedzirra"
-  config.gem "whenever", :source => "git://github.com/javan/whenever.git"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

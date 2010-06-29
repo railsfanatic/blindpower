@@ -2,13 +2,12 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title><%= h(yield(:title) || "Untitled") %></title>
+    <title>Blind Power: <%= h(yield(:title) || "Untitled") %></title>
     <%= stylesheet_link_tag 'application' %>
 		<%= javascript_include_tag :all %>
     <%= yield(:head) %>
   </head>
   <body>
-		
     <div id="container">
 			
       <%- if show_title? -%>

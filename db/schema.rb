@@ -12,15 +12,18 @@
 ActiveRecord::Schema.define(:version => 20100628213606) do
 
   create_table "bills", :force => true do |t|
+    t.string   "guid"
     t.integer  "congress"
     t.string   "bill_type"
     t.integer  "bill_number"
     t.text     "title"
-    t.string   "url"
+    t.string   "link"
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "bills", ["guid"], :name => "index_bills_on_guid"
 
   create_table "comments", :force => true do |t|
     t.integer  "user_id"

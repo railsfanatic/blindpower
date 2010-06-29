@@ -5,11 +5,11 @@ module Feedzirra
       include FeedEntryUtilities
       
       element :congress
-      element :bill_type
-      element :bill_number
+      element :"bill-type", :as => :bill_type
+      element :"bill-number", :as => :bill_number
       element :title
       element :link
-      element :bill_status
+      element :"bill-status", :as => :status
     end
   end
 end

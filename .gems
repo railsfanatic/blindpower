@@ -1,6 +1,6 @@
+whenever --source http://rubygems.org
 rails -v 2.3.8
 authlogic
 bluecloth
 linguistics
 feedzirra
-whenever --source http://rubygems.org

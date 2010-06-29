@@ -51,11 +51,10 @@ ActiveRecord::Schema.define(:version => 20100628213606) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
-    t.boolean  "approved",   :default => true,  :null => false
+    t.boolean  "approved",   :default => true, :null => false
     t.string   "user_ip"
     t.string   "user_agent"
     t.string   "referer"
-    t.boolean  "deleted",    :default => false, :null => false
     t.datetime "deleted_at"
     t.integer  "deleted_by"
   end

@@ -1,8 +1,9 @@
 <% title "Bills" %>
 
-<% @results.each do |result| %>
+<% @bills.each do |bill| %>
 
-	<%= link_to result.title, result.link, :target => :blank %>
+	<%= link_to bill.title, bill.link, :target => :blank %><br />
+	Status: <%= bill.status %>
 	<hr />
 
 <% end %>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100701023122) do
+ActiveRecord::Schema.define(:version => 20100701071624) do
 
   create_table "bills", :force => true do |t|
     t.string   "guid"
@@ -28,7 +28,10 @@ ActiveRecord::Schema.define(:version => 20100701023122) do
     t.date     "last_action_on"
     t.text     "last_action_text"
     t.date     "enacted_on"
-    t.float    "average_rating"
+    t.float    "average_rating",   :default => 0.0, :null => false
+    t.datetime "deleted_at"
+    t.integer  "deleted_by"
+    t.integer  "cosponsors_count", :default => 0
   end
 
   add_index "bills", ["guid"], :name => "index_bills_on_guid"
@@ -72,6 +75,8 @@ ActiveRecord::Schema.define(:version => 20100701023122) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "legislators", ["bioguide_id"], :name => "index_legislators_on_bioguide_id"
 
   create_table "posts", :force => true do |t|
     t.integer  "user_id"

@@ -14,6 +14,8 @@ class CreateLegislators < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    add_index :legislators, :bioguide_id
   end
 
   def self.down

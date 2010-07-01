@@ -1,0 +1,72 @@
+<% form_for @bill do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :guid %><br />
+    <%= f.text_field :guid %>
+  </p>
+  <p>
+    <%= f.label :congress %><br />
+    <%= f.text_field :congress %>
+  </p>
+  <p>
+    <%= f.label :bill_type %><br />
+    <%= f.text_field :bill_type %>
+  </p>
+  <p>
+    <%= f.label :bill_number %><br />
+    <%= f.text_field :bill_number %>
+  </p>
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_area :title %>
+  </p>
+  <p>
+    <%= f.label :link %><br />
+    <%= f.text_field :link %>
+  </p>
+  <p>
+    <%= f.label :status %><br />
+    <%= f.text_field :status %>
+  </p>
+  <p>
+    <%= f.label :short_title %><br />
+    <%= f.text_field :short_title %>
+  </p>
+  <p>
+    <%= f.label :official_title %><br />
+    <%= f.text_field :official_title %>
+  </p>
+  <p>
+    <%= f.label :summary %><br />
+    <%= f.text_area :summary %>
+  </p>
+  <p>
+    <%= f.label :sponsor_id %><br />
+    <%= f.text_field :sponsor_id %>
+  </p>
+  <p>
+    <%= f.label :last_action_on %><br />
+    <%= f.date_select :last_action_on %>
+  </p>
+  <p>
+    <%= f.label :last_action_text %><br />
+    <%= f.text_area :last_action_text %>
+  </p>
+  <p>
+    <%= f.label :enacted_on %><br />
+    <%= f.date_select :enacted_on %>
+  </p>
+  <p>
+    <%= f.label :average_rating %><br />
+    <%= f.text_field :average_rating %>
+  </p>
+  <p>
+    <%= f.label :deleted_at %><br />
+    <%= f.datetime_select :deleted_at %>
+  </p>
+  <p>
+    <%= f.label :deleted_by %><br />
+    <%= f.text_field :deleted_by %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

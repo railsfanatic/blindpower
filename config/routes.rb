@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :bills
+
+  map.resources :bills, :has_many => :comments, :shallow => true
   
   map.resources :comments, :only => [:index], :collection => {:destroy_multiple => :delete}, :member => {:approve => :put, :reject => :put}
   
@@ -8,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :user_sessions
   
-  map.resources :posts, :has_many => :comments, :shallow => :true, :collection => { :destroy_multiple => :delete }, :member => { :recover => :put }
+  map.resources :posts, :has_many => :comments, :shallow => true, :collection => { :destroy_multiple => :delete }
   
   map.resources :users, :collection => { :update_multiple => :put }
   

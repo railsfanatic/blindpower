@@ -1,0 +1,72 @@
+<% title "Bill" %>
+
+<p>
+  <strong>Congress:</strong>
+  <%=h @bill.congress %>
+</p>
+<p>
+  <strong>Bill Number:</strong>
+  <%=h @bill.full_number %>
+</p>
+<p>
+  <strong>Title:</strong>
+  <%=h @bill.title %>
+</p>
+<p>
+	<%= link_to "Skip to Comments", :anchor => "comments" %>
+</p>
+<p>
+  <strong><%= link_to "Govtrack Link", @bill.link, :target => "_blank" %></strong>
+</p>
+<p>
+  <strong>Status:</strong>
+  <%=h @bill.status %>
+</p>
+<p>
+  <strong>Summary:</strong>
+  <%=h @bill.summary %>
+</p>
+<p>
+  <strong>Sponsor:</strong>
+  <%=h @bill.sponsor.full_name %>
+</p>
+<p>
+  <strong>Last Action On:</strong>
+  <%=h @bill.last_action_on %>
+</p>
+<p>
+  <strong>Last Action:</strong>
+  <%=h @bill.last_action_text %>
+</p>
+<p>
+  <strong>Average Rating:</strong>
+  <%=h @bill.average_rating %>
+</p>
+
+<h3><%= pluralize(@bill.cosponsors.count, "Cosponsor") %>:</h3>
+<table border="1">
+<% @bill.cosponsors.in_groups_of(3, false) do |row_cs| %>
+	<tr>
+	<% for cs in row_cs %>
+	<td><%=h cs.full_name %></td>
+	<% end %>
+	</tr>
+<% end %>
+</table>
+
+<% unless @bill.comments.empty? %>
+  <h4 id="comments_count">
+    <a name="comments"><%= pluralize @bill.comments.approved.size, 'comment' %></a>
+  </h4>
+  <div id="comments">
+    <%= render @bill.comments.approved %>
+  </div>
+<% end %>
+
+<div>
+  <%= render :partial => 'comments/form' %>
+</div>
+
+<p>
+  <%= link_to "View All", bills_path %>
+</p>

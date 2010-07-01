@@ -11,6 +11,14 @@ class ApplicationController < ActionController::Base
   
   helper_method :current_user, :admin?, :app_admin?
   
+  def sort_order(default)
+    if params[:c]
+      params[:c].to_s.gsub(/[\s;'\"]/,'') + " " + (params[:d] == 'down' ? 'DESC' : 'ASC')
+    else
+      default
+    end
+  end
+  
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find
@@ -33,7 +41,14 @@ class ApplicationController < ActionController::Base
   end
   
   def app_admin?
-    current_user && current_user.username == "TomG"
+    current_user && current_user.email == "tom@grushka.com"
+  end
+  
+  def ensure_admin
+    unless admin?
+      flash[:error] = "Unauthorized!"
+      redirect_to root_url
+    end
   end
   
   def ensure_app_admin

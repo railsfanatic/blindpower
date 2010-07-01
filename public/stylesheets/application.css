@@ -117,3 +117,19 @@ a {
 	text-align: center;
 	font-size: 12px;
 }
+
+.gray {
+	background-color: #aaa;
+}
+
+table {
+	border-spacing: 0;
+}
+
+td {
+	padding: 5px;
+}
+
+td.nowrap {
+	white-space: nowrap;
+}

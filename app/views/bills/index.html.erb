@@ -1,10 +1,19 @@
 <% title "Bills" %>
 
-<% @bills.each do |bill| %>
+<table>
+	<tr>
+		<th><%= sort_link "Number", :title %></th>
+		<th>Title</th>
+		<th><%= sort_link "Last Action", :last_action_on %></th>
+		<th><%= sort_link "Status", :status %></th>
+		<th><%= sort_link "Cosp.", :cosponsors_count %></th>
+		<th><%= sort_link "Rating", :average_rating %></th>
+	</tr>
+<%= render @bills %>
+</table>
+<%= will_paginate @bills %>
 
-	<%= link_to bill.title, bill.link, :target => :blank %><br />
-	Status: <%= bill.status %><br />
-	Rating: <%= bill.rating %>
-	<hr />
-
+<% if admin? %>
+	<h3>Deleted Bills</h3>
+	<%= render @deleted_bills %>
 <% end %>

@@ -43,30 +43,20 @@ class PostsController < ApplicationController
   end
   
   def update
-    params[:post][:tag_ids] ||= []
+    #params[:post][:tag_ids] ||= []
     @post = Post.find(params[:id])
     if admin? || @post.user == current_user
       if @post.update_attributes(params[:post])
+        @post.update_attribute(:deleted_at, nil)
         flash[:notice] = "Successfully updated post."
-        redirect_to @post
+        redirect_to :back
       else
         render :action => 'edit'
       end
     else
       flash[:error] = "Unauthorized!"
-      redirect_to @post
+      redirect_to :back
     end
-  end
-  
-  def recover
-    @post = Post.find(params[:id])
-    if admin?
-      @post.update_attribute(:deleted_at, nil)
-      flash[:notice] = "Successfully recovered post."
-    else
-      flash[:error] = "Unauthorized!"
-    end
-    redirect_to posts_path
   end
   
   def destroy
@@ -75,7 +65,7 @@ class PostsController < ApplicationController
     if admin? || @post.user == current_user
       @post.update_attribute(:deleted_at, Time.now)
       @post.update_attribute(:deleted_by, current_user.id)
-      flash[:notice] = "Successfully deleted post."
+      flash[:notice] = "Successfully marked post as deleted."
       redirect_to posts_path
     else
       flash[:error] = "Unauthorized!"

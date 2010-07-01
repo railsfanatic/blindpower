@@ -7,7 +7,9 @@ class AddInfoToBills < ActiveRecord::Migration
     add_column :bills, :last_action_on, :date
     add_column :bills, :last_action_text, :text
     add_column :bills, :enacted_on, :date
-    add_column :bills, :average_rating, :float
+    add_column :bills, :average_rating, :float, :null => false, :default => 0
+    add_column :bills, :deleted_at, :datetime
+    add_column :bills, :deleted_by, :integer
     
     create_table :bills_cosponsors, :id => false do |t|
       t.integer :bill_id
@@ -18,6 +20,8 @@ class AddInfoToBills < ActiveRecord::Migration
   def self.down
     drop_table :bills_cosponsors
     
+    remove_column :bills, :deleted_by
+    remove_column :bills, :deleted_at
     remove_column :bills, :average_rating
     remove_column :bills, :enacted_on
     remove_column :bills, :last_action_text

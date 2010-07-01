@@ -1,7 +1,7 @@
 class AddInfoToBills < ActiveRecord::Migration
   def self.up
     add_column :bills, :short_title, :string
-    add_column :bills, :official_title, :string
+    add_column :bills, :official_title, :text
     add_column :bills, :summary, :text
     add_column :bills, :sponsor_id, :integer
     add_column :bills, :last_action_on, :date

@@ -1,10 +1,10 @@
 class Comment < ActiveRecord::Base
-  attr_accessible :content, :user_id, :post_id
-  belongs_to :post
+  attr_accessible :content
+  belongs_to :commentable, :polymorphic => true
   belongs_to :user
   validates_presence_of :content
   before_create :check_for_spam
-  acts_as_list :scope => :post
+  acts_as_list :scope => :commentable
   
   def self.approved
     all(:conditions => { :approved => true }, :order => "created_at DESC")

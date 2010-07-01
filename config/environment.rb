@@ -23,6 +23,9 @@ Rails::Initializer.run do |config|
   config.gem "bluecloth"
   config.gem "linguistics"
   config.gem "feedzirra"
+  config.gem "json"
+  config.gem "crack", :source => "git://github.com/phiggins/crack.git"
+  config.gem "drumbone"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

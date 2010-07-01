@@ -1,17 +1,17 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :bills
   
-  map.resources :comments, :collection => { :destroy_multiple => :delete }, :member => { :approve => :put, :reject => :put }
+  map.resources :comments, :only => [:index], :collection => {:destroy_multiple => :delete}, :member => {:approve => :put, :reject => :put}
   
   map.login "login", :controller => "user_sessions", :action => "new"
   map.logout "logout", :controller => "user_sessions", :action => "destroy"
-
+  
   map.resources :user_sessions
-
+  
   map.resources :posts, :has_many => :comments, :shallow => :true, :collection => { :destroy_multiple => :delete }, :member => { :recover => :put }
-
+  
   map.resources :users, :collection => { :update_multiple => :put }
-
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

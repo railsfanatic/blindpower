@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100628213606) do
+ActiveRecord::Schema.define(:version => 20100701001859) do
 
   create_table "bills", :force => true do |t|
     t.string   "guid"
@@ -21,18 +21,32 @@ ActiveRecord::Schema.define(:version => 20100628213606) do
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "short_title"
+    t.string   "official_title"
+    t.text     "summary"
+    t.integer  "sponsor_id"
+    t.date     "last_action_on"
+    t.text     "last_action_text"
+    t.date     "enacted_on"
+    t.float    "average_rating"
   end
 
   add_index "bills", ["guid"], :name => "index_bills_on_guid"
 
+  create_table "bills_cosponsors", :id => false, :force => true do |t|
+    t.integer "bill_id"
+    t.integer "legislator_id"
+  end
+
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "post_id"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
     t.text     "content"
     t.string   "user_ip"
     t.string   "user_agent"
     t.string   "referer"
-    t.boolean  "approved",   :default => false, :null => false
+    t.boolean  "approved",         :default => false, :null => false
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -40,6 +54,21 @@ ActiveRecord::Schema.define(:version => 20100628213606) do
 
   create_table "countries", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "legislators", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "govtrack_id"
+    t.string   "bioguide_id"
+    t.string   "title"
+    t.string   "nickname"
+    t.string   "name_suffix"
+    t.integer  "district"
+    t.string   "state"
+    t.string   "party"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

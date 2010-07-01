@@ -3,7 +3,7 @@ class Post < ActiveRecord::Base
   belongs_to :user
   belongs_to :deleted_by_user, :class_name => "User", :foreign_key => "deleted_by"
   has_and_belongs_to_many :tags
-  has_many :comments, :dependent => :delete_all
+  has_many :comments, :as => :commentable, :dependent => :delete_all
   acts_as_list
   attr_accessor :new_tag_names
   

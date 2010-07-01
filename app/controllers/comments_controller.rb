@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
   before_filter :authenticate, :except => :index
   
   def index
+    @commentable = find_commentable
     @approved_comments = Comment.recent(20, :approved => true)
     @rejected_comments = Comment.recent(100, :approved => false) if admin?
   end
@@ -11,8 +12,11 @@ class CommentsController < ApplicationController
   end
   
   def create
-    @comment = current_user.comments.new(params[:comment])
+    @commentable = find_commentable
+    @comment = @commentable.comments.build(params[:comment])
+    @comment.user = current_user
     @comment.request = request
+    
     if @comment.save
       if @comment.approved?
         flash[:notice] = "Thanks for the comment."
@@ -20,9 +24,9 @@ class CommentsController < ApplicationController
         flash[:error] = "Unfortunately this comment is considered spam by Akismet. " + 
                         "It will show up once it has been approved by a moderator."
       end
-      redirect_to @comment.post
+      redirect_to @commentable
     else
-      render :action => 'new'
+      redirect_to :back
     end
   end
   
@@ -67,5 +71,16 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     @comment.mark_as_spam!
     redirect_to comments_path
+  end
+  
+  private
+  
+  def find_commentable
+    params.each do |name, value|
+      if name =~ /(.+)_id$/
+        return $1.classify.constantize.find(value)
+      end
+    end
+    nil
   end
 end

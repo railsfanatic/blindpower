@@ -3,3 +3,6 @@ authlogic
 bluecloth
 linguistics
 feedzirra
+json
+crack --source http://github.com/phiggins/crack.git
+drumbone

@@ -1,6 +1,4 @@
 <div>
-	<strong>Post #<%= comment.post.position %>:</strong>
-	<%= link_to h(comment.post.title), post_path(comment.post) %><br />
 	<%= comment.position.to_s %>. <%= link_to h(comment.user.username), user_path(comment.user) %>
 	<%= comment.created_at.strftime("%a, %b %e %I:%M %p") %><br />
 	<%=h comment.content %>

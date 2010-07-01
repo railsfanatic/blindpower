@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100701001859) do
+ActiveRecord::Schema.define(:version => 20100701023122) do
 
   create_table "bills", :force => true do |t|
     t.string   "guid"
@@ -92,6 +92,16 @@ ActiveRecord::Schema.define(:version => 20100701001859) do
     t.integer "post_id"
     t.integer "tag_id"
   end
+
+  create_table "ratings", :force => true do |t|
+    t.integer  "rating",        :default => 0
+    t.datetime "created_at",                   :null => false
+    t.string   "rateable_type",                :null => false
+    t.integer  "rateable_id",                  :null => false
+    t.integer  "user_id",                      :null => false
+  end
+
+  add_index "ratings", ["user_id"], :name => "index_ratings_on_user_id"
 
   create_table "states", :force => true do |t|
     t.integer  "country_id"

@@ -3,7 +3,8 @@
 <% @bills.each do |bill| %>
 
 	<%= link_to bill.title, bill.link, :target => :blank %><br />
-	Status: <%= bill.status %>
+	Status: <%= bill.status %><br />
+	Rating: <%= bill.rating %>
 	<hr />
 
 <% end %>

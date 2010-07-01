@@ -2,6 +2,7 @@ class Bill < ActiveRecord::Base
   has_many :comments, :as => :commentable, :dependent => :delete_all
   belongs_to :sponsor, :class_name => "Legislator"
   has_and_belongs_to_many :cosponsors, :join_table => "bills_cosponsors", :class_name => "Legislator"
+  acts_as_rateable
   
   def self.update_from_feed
     feed_url = "http://www.govtrack.us/congress/billsearch_api.xpd?q=blind"

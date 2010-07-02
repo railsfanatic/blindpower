@@ -7,7 +7,7 @@ class Legislator < ActiveRecord::Base
   end
   
   def full_name
-    "#{title} #{first_or_nick} #{last_name} (#{party})"
+    "#{title} #{first_or_nick} #{last_name} (#{party}-#{state})"
   end
   
   def state_name

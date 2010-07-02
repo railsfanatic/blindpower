@@ -1,7 +1,6 @@
 class Bill < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 20
-  attr_accessible nil
   has_many :comments, :as => :commentable, :dependent => :delete_all
   belongs_to :sponsor, :class_name => "Legislator"
   has_and_belongs_to_many :cosponsors, :order => :state, :join_table => "bills_cosponsors", :class_name => "Legislator"
@@ -19,7 +18,7 @@ class Bill < ActiveRecord::Base
   
   def find_paragraphs
     r = []
-    bill_html.scan(/<p>(.*?)<\/p>/).each { |s| r << s[0] }
+    bill_html.to_s.scan(/<p>(.*?)<\/p>/).each { |s| r << s[0] }
     r
   end
   
@@ -37,8 +36,8 @@ class Bill < ActiveRecord::Base
   
   def update_counts
     self.cosponsors_count = self.cosponsors.count
-    self.text_word_count = self.bill_html.word_count
-    self.summary_word_count = self.summary.word_count
+    self.text_word_count = self.bill_html.to_s.word_count
+    self.summary_word_count = self.summary.to_s.word_count
     self.blind_count = self.find_blind.count
     self.deafblind_count = self.find_deafblind.count
   end
@@ -83,11 +82,15 @@ class Bill < ActiveRecord::Base
   end # self.update_from_feed
   
   def self.make_govtrack_id(result)
-    result.bill_type + result.bill_number.to_s + "-" + result.congress.to_s
+    p = result.bill_type + result.bill_number.to_s + "-" + result.congress.to_s
+    logger.info p
+    p
   end
   
   def self.make_drumbone_id(result)
-    convert_bill_type(result.bill_type) + result.bill_number.to_s + "-" + result.congress.to_s
+    p = convert_bill_type(result.bill_type) + result.bill_number.to_s + "-" + result.congress.to_s
+    logger.info p
+    p
   end
   
   def self.update_from_drumbone(bill)

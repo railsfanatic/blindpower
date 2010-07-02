@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20100702092157) do
   end
 
   add_index "bills", ["drumbone_id"], :name => "index_bills_on_guid"
+  add_index "bills", ["govtrack_id"], :name => "index_bills_on_govtrack_id"
 
   create_table "bills_cosponsors", :id => false, :force => true do |t|
     t.integer "bill_id"

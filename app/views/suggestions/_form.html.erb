@@ -1,0 +1,12 @@
+<% form_for @suggestion do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :kind %><br />
+		<%= f.select :kind, ["Legislation", "Activism", "Social"] %>
+  </p>
+  <p>
+    <%= f.label :content, "Suggestion (140 characters max)" %><br />
+    <%= f.text_field :content, :size => 50, :maxlength => 140 %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

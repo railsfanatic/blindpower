@@ -47,3 +47,5 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 Linguistics::use(:en)
+require 'lib/numeric.rb'
+require 'lib/string.rb'

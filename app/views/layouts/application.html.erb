@@ -29,7 +29,8 @@
 				<ul>
 					<li><%= link_to "Home", root_url %></li>
 					<li><%= link_to "Blog", posts_path %></li>
-					<li><%= link_to "Bills", bills_path %></li>
+					<li><%= link_to "U.S. Legislation", bills_path %></li>
+					<li><%= link_to "Suggestions", suggestions_path %></li>
 				<% if current_user %>
 					<li><%= link_to "New Post", new_post_path %></li>
 					<li><%= link_to "Edit Profile", edit_user_path(:current) %></li>

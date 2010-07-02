@@ -1,0 +1,12 @@
+<% title "Suggestions" %>
+
+<% @suggestion_kinds.sort.each do |kind, suggestions| %>
+  <h3><%= kind %></h3>
+	<ul>
+  <% for suggestion in suggestions %>
+  	<li><%= suggestion.content %></li>
+  <% end %>
+	</ul>
+<% end %>
+
+<p><%= link_to "New Suggestion", new_suggestion_path %></p>

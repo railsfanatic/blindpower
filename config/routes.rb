@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :suggestions
 
-  map.resources :bills, :has_many => :comments, :shallow => true
+  map.resources :bills, :has_many => :comments, :shallow => true, :member => { :summarize => :get, :read => :get }
   
   map.resources :comments, :only => [:index], :collection => {:destroy_multiple => :delete}, :member => {:approve => :put, :reject => :put}
   

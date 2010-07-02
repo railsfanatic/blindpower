@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   belongs_to :state
   has_many :posts
   has_many :comments
+  has_many :suggestions
   
   def full_name
     first_name + " " + last_name

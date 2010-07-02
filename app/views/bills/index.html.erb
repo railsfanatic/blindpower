@@ -8,12 +8,31 @@
 		<th><%= sort_link "Status", :status %></th>
 		<th><%= sort_link "Cosp.", :cosponsors_count %></th>
 		<th><%= sort_link "Rating", :average_rating %></th>
+		<th><%= sort_link "Refs", :blind_count %></th>
 	</tr>
-<%= render @bills %>
+	<% for bill in @bills %>
+	<tr class="<%= cycle('gray', '') %>">
+		<td class="nowrap"><%= link_to bill.full_number, bill %></td>
+		<td><%= truncate(bill.bill_title, :length => 150) %></td>
+		<td class="nowrap"><%= bill.last_action_on.strftime("%m/%d/%y") %></td>
+		<td><%= bill.status %></td>
+		<td class="nowrap"><%= bill.cosponsors.count %></td>
+		<td class="nowrap"><%= bill.rating.zero? ? "N/A" : bill.rating %></td>
+		<td class="nowrap">
+			<%= bill.blind_count %> in<br />
+			<%= number_with_delimiter(bill.text_word_count) %>
+		</td>
+		<% if admin? %>
+		<td><%= link_to "Delete", bill, :method => :delete, :confirm => "Delete this Bill?" %></td>
+		<% end %>
+	</tr>
+	<% end %>
 </table>
 <%= will_paginate @bills %>
 
-<% if admin? %>
-	<h3>Deleted Bills</h3>
-	<%= render @deleted_bills %>
+<% if admin? && @deleted_bills.count.nonzero? %>
+	<h3>"Irrelevant" (Deleted) Bills</h3>
+	<% @deleted_bills.each do |bill| %>
+		<%= delete_link(bill, false, bill.title) %>
+	<% end %>
 <% end %>

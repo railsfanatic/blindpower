@@ -1,4 +1,4 @@
-<% title "Bill" %>
+<% title @bill.title %>
 
 <p>
   <strong>Congress:</strong>
@@ -16,19 +16,21 @@
 	<%= link_to "Skip to Comments", :anchor => "comments" %>
 </p>
 <p>
-  <strong><%= link_to "Govtrack Link", @bill.link, :target => "_blank" %></strong>
-</p>
-<p>
   <strong>Status:</strong>
   <%=h @bill.status %>
 </p>
 <p>
   <strong>Summary:</strong>
-  <%=h @bill.summary %>
+  <%= truncate h(@bill.summary), :length => 350, :omission => summarize_link(@bill) %>
 </p>
 <p>
   <strong>Sponsor:</strong>
-  <%=h @bill.sponsor.full_name %>
+  <%=h @bill.sponsor ? @bill.sponsor.full_name : nil %>
+</p>
+<p>
+  <strong>Co-sponsored by:</strong>
+	<%= pluralize(@bill.cosponsors.count(:conditions => {:party => "D"}), "Democrat") %> and
+	<%= pluralize(@bill.cosponsors.count(:conditions => {:party => "R"}), "Republican") %>
 </p>
 <p>
   <strong>Last Action On:</strong>
@@ -43,16 +45,37 @@
   <%=h @bill.average_rating %>
 </p>
 
-<h3><%= pluralize(@bill.cosponsors.count, "Cosponsor") %>:</h3>
+<h4><%= pluralize(@find_blind.length, "reference") %> to &lsquo;blind&rsquo;</h4>
+<ol>
+<% @bill.find_blind.each do |p| %>
+	<li><%= p %></li>
+<% end %>
+</ol>
+
+<h4><%= pluralize(@find_deafblind.length, "reference") %> to &lsquo;deaf-blind&rsquo;</h4>
+<ol>
+<% @bill.find_deafblind.each do |p| %>
+	<li><%= p %></li>
+<% end %>
+</ol>
+
+<h4><%= read_link(@bill) %></h4>
+
+<h3><%= pluralize(@bill.cosponsors_count, "Cosponsor") %>
+	from <%= pluralize(@cosponsor_states.count, "State") %></h3>
+
+<% unless @bill.cosponsors.empty? %>
 <table border="1">
-<% @bill.cosponsors.in_groups_of(3, false) do |row_cs| %>
+<% @cosponsor_states.sort.each do |state, cosponsors| %>
 	<tr>
-	<% for cs in row_cs %>
-	<td><%=h cs.full_name %></td>
-	<% end %>
+		<th><%= state.to_us_state %></th>
+		<td>
+			<%=h cosponsors.collect(&:full_name).sort.join(", ") %>
+		</td>
 	</tr>
 <% end %>
 </table>
+<% end %>
 
 <% unless @bill.comments.empty? %>
   <h4 id="comments_count">

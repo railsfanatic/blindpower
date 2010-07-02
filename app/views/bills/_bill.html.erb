@@ -1,8 +1,0 @@
-<tr class="<%= cycle('gray', '') %>">
-	<td class="nowrap"><%= link_to bill.full_number, bill %></td>
-	<td><%= truncate(bill.bill_title, 150) %></td>
-	<td class="nowrap"><%= bill.last_action_on.strftime("%m/%d/%y") %></td>
-	<td><%= bill.status %></td>
-	<td class="nowrap"><%= bill.cosponsors_count %></td>
-	<td class="nowrap"><%= bill.rating %></td>
-</tr>

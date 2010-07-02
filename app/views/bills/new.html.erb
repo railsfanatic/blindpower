@@ -1,5 +1,39 @@
-<% title "New Bill" %>
+<% title "Add Bill" %>
 
-<%= render :partial => 'form' %>
+<p>Add a bill to the database.</p>
+
+<p>THOMAS Search for:
+	<%= link_to "Visually Impaired", "http://thomas.loc.gov/cgi-bin/query/r?c111:visually+impaired", :target => "_blank" %> | 
+	<%= link_to "Blind", "http://thomas.loc.gov/cgi-bin/query/r?c111:blind", :target => "_blank" %>
+</p>
+
+<% form_for @bill do |f| %>
+  <%= f.error_messages %>
+	<p>
+		<%= f.label :congress %><br />
+		<%= f.select :congress, [
+			'111'
+		] %>
+  <p>
+    <%= f.label :bill_type %><br />
+		<%= f.select :bill_type, [
+			['H.R.', 'h'],
+			['H.Res.', 'hr'],
+			['H.J.Res.', 'hj'],
+			['H.C.Res.', 'hc'],
+			['S.', 's'],
+			['S.Res.', 'sr'],
+			['S.J.Res.', 'sj'],
+			['S.C.Res.', 'sc'],
+		] %>
+  </p>
+  <p>
+    <%= f.label :bill_number %><br />
+    <%= f.text_field :bill_number, :maxlength => 5 %>
+  </p>
+	<p>
+		<%= f.submit "Add Bill" %>
+	</p>
+<% end %>
 
 <p><%= link_to "Back to List", bills_path %></p>

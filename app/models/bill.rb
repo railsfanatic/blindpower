@@ -6,10 +6,31 @@ class Bill < ActiveRecord::Base
   has_and_belongs_to_many :cosponsors, :order => :state, :join_table => "bills_cosponsors", :class_name => "Legislator"
   acts_as_rateable
   before_save :update_counts
-  include HTTParty
+  after_create :update_me
   
   def to_param
     "#{id}-#{govtrack_id}"
+  end
+  
+  def full_number
+    case bill_type
+      when 'h' then 'H.R.'
+      when 'hr' then 'H.Res.'
+      when 'hj' then 'H.J.Res.'
+      when 'hc' then 'H.C.Res.'
+      when 's' then 'S.'
+      when 'sr' then 'S.Res.'
+      when 'sj' then 'S.J.Res.'
+      when 'sc' then 'S.C.Res.'
+		end + ' ' + bill_number.to_s
+  end
+  
+  def title
+    official_title
+  end
+  
+  def status
+    state
   end
   
   def paragraphs
@@ -44,44 +65,24 @@ class Bill < ActiveRecord::Base
     self.bill_html = "" if self.deleted_at
   end
   
-  def bill_title
-    short_title.blank? ? official_title : short_title
-  end
-  
-  def full_number
-    title.split(":").first
-  end
-  
-  def self.update_from_feed
+  def self.create_from_feed
     feed_url = "http://www.govtrack.us/congress/billsearch_api.xpd?q=blind"
     feed = Feedzirra::Feed.fetch_raw(feed_url)
     results = Feedzirra::Parser::Govtrack.parse(feed).search_results
     results.each do |result|
       bill = Bill.find_by_govtrack_id(make_govtrack_id(result))
-      unless bill && bill.deleted_at # ignore deleted
-        if bill
-          unless bill.status == result.status
-            bill.update_attribute(:status, result.status)
-            bill.dirty = true
-          end
-        else
-          bill = create(
-            :govtrack_id  => make_govtrack_id(result),
-            :drumbone_id  => make_drumbone_id(result),
-            :congress     => result.congress,
-            :bill_type    => result.bill_type,
-            :bill_number  => result.bill_number,
-            :title        => result.title,
-            :link         => result.link,
-            :status       => result.status,
-            :dirty        => true
-          )
-        end
-        update_from_drumbone(bill)
-        update_bill_text(bill) if bill.dirty?
-      end # ignore deleted bills
-    end # each
-  end # self.update_from_feed
+      unless bill
+        bill = create(
+          :govtrack_id  => make_govtrack_id(result),
+          :drumbone_id  => make_drumbone_id(result),
+          :congress     => result.congress,
+          :bill_type    => result.bill_type,
+          :bill_number  => result.bill_number,
+          :dirty        => true
+        )
+      end
+    end
+  end
   
   def self.make_govtrack_id(result)
     p = result.bill_type + result.bill_number.to_s + "-" + result.congress.to_s
@@ -95,36 +96,48 @@ class Bill < ActiveRecord::Base
     p
   end
   
-  def self.update_from_drumbone(bill)
-    db = Drumbone::Bill.find :bill_id => bill.drumbone_id
-    if bill.dirty? || bill.last_action_on.to_formatted_s(:db) != Date.parse(db.last_action.acted_at).to_formatted_s(:db)
-      bill.short_title = db.short_title
-      bill.official_title = db.official_title
-      bill.last_action_text = db.last_action.text
-      bill.last_action_on = db.last_action.acted_at
-      bill.summary = db.summary
+  def make_drumbone_id(result)
+    p = convert_bill_type(result.bill_type) + result.bill_number.to_s + "-" + result.congress.to_s
+    logger.info p
+    p
+  end
+  
+  def update_me
+    self.drumbone_id ||= make_drumbone_id(self)
+    drumbone = Drumbone::Bill.find :bill_id => self.drumbone_id
+    if self.dirty? ||
+     !self.text_updated_on ||
+     self.text_updated_on < Date.parse(drumbone.last_action.acted_at) ||
+     self.last_action_on != Date.parse(drumbone.last_action.acted_at)
+     
+      self.short_title = drumbone.short_title
+      self.official_title = drumbone.official_title
+      self.last_action_text = drumbone.last_action.text
+      self.last_action_on = drumbone.last_action.acted_at
+      self.summary = drumbone.summary
+      self.state = drumbone.state
       
-      s = Legislator.find_by_bioguide_id(db.sponsor.bioguide_id)
+      s = Legislator.find_by_bioguide_id(drumbone.sponsor.bioguide_id)
       if s
-        bill.sponsor_id = s.id
+        self.sponsor_id = s.id
       else
-        bill.create_sponsor(
-          :bioguide_id => db.sponsor.bioguide_id,
-          :title => db.sponsor.title,
-          :first_name => db.sponsor.first_name,
-          :last_name => db.sponsor.last_name,
-          :name_suffix => db.sponsor.name_suffix,
-          :nickname => db.sponsor.nickname,
-          :district => db.sponsor.district,
-          :state => db.sponsor.state,
-          :party => db.sponsor.party,
-          :govtrack_id => db.sponsor.govtrack_id
+        self.create_sponsor(
+          :bioguide_id => drumbone.sponsor.bioguide_id,
+          :title => drumbone.sponsor.title,
+          :first_name => drumbone.sponsor.first_name,
+          :last_name => drumbone.sponsor.last_name,
+          :name_suffix => drumbone.sponsor.name_suffix,
+          :nickname => drumbone.sponsor.nickname,
+          :district => drumbone.sponsor.district,
+          :state => drumbone.sponsor.state,
+          :party => drumbone.sponsor.party,
+          :govtrack_id => drumbone.sponsor.govtrack_id
         )
       end
-      if db.cosponsors
-        bill.cosponsors = []
-        db.cosponsors.each do |cs|
-          bill.cosponsors << Legislator.find_or_create_by_bioguide_id(
+      if drumbone.cosponsors
+        self.cosponsors = []
+        drumbone.cosponsors.each do |cs|
+          self.cosponsors << Legislator.find_or_create_by_bioguide_id(
             cs.bioguide_id,
             :title => cs.title,
             :first_name => cs.first_name,
@@ -138,21 +151,35 @@ class Bill < ActiveRecord::Base
           )
         end
       end
-      
-      bill.save
+      if !self.text_updated_on || self.text_updated_on < Date.parse(drumbone.last_action.acted_at)
+        bill_object = HTTParty.get("http://www.govtrack.us/data/us/bills.text/#{self.congress.to_s}/#{self.bill_type}/#{self.bill_type + self.bill_number.to_s}.html")
+        self.bill_html = bill_object.response.body
+        self.text_updated_on = Date.today
+        logger.info "Updated Bill Text for #{self.drumbone_id}"
+      end
+      self.dirty = false
+      self.save
     end
-  end
-  
-  def self.update_bill_text(bill)
-    bill_object = get("http://www.govtrack.us/data/us/bills.text/#{bill.congress.to_s}/#{bill.bill_type}/#{bill.bill_type + bill.bill_number.to_s}.html")
-    bill.bill_html = bill_object.response.body
-    bill.dirty = false
-    bill.save
+    true
   end
   
   private
   
   def self.convert_bill_type(bill_type)
+    case bill_type
+      when "h" then "hr"
+      when "hr" then "hres"
+      when "hj" then "hjres"
+      when "hc" then "hcres"
+      when "s" then "s"
+      when "sr" then "sres"
+      when "sj" then "sjres"
+      when "sc" then "scres"
+      else bill_type
+    end
+  end
+  
+  def convert_bill_type(bill_type)
     case bill_type
       when "h" then "hr"
       when "hr" then "hres"

@@ -2,7 +2,7 @@
 
 <table>
 	<tr>
-		<th><%= sort_link "Number", :title %></th>
+		<th><%= sort_link "Number", :bill_number %></th>
 		<th>Title</th>
 		<th><%= sort_link "Last Action", :last_action_on %></th>
 		<th><%= sort_link "Status", :status %></th>
@@ -13,7 +13,7 @@
 	<% for bill in @bills %>
 	<tr class="<%= cycle('gray', '') %>">
 		<td class="nowrap"><%= link_to bill.full_number, bill %></td>
-		<td><%= truncate(bill.bill_title, :length => 150) %></td>
+		<td><%= truncate(bill.official_title, :length => 150) %></td>
 		<td class="nowrap"><%= bill.last_action_on.strftime("%m/%d/%y") %></td>
 		<td><%= bill.status %></td>
 		<td class="nowrap"><%= bill.cosponsors.count %></td>
@@ -30,9 +30,16 @@
 </table>
 <%= will_paginate @bills %>
 
-<% if admin? && @deleted_bills.count.nonzero? %>
+<% if admin? %>
+
+<p><%= link_to "Add Bill", new_bill_path %></p>
+
+<% if @deleted_bills.count.nonzero? %>
 	<h3>"Irrelevant" (Deleted) Bills</h3>
 	<% @deleted_bills.each do |bill| %>
 		<%= delete_link(bill, false, bill.title) %>
 	<% end %>
 <% end %>
+
+<% end %>
+

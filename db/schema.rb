@@ -9,16 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100702092157) do
+ActiveRecord::Schema.define(:version => 20100702181309) do
 
   create_table "bills", :force => true do |t|
     t.string   "drumbone_id"
     t.integer  "congress"
     t.string   "bill_type"
     t.integer  "bill_number"
-    t.text     "title"
     t.string   "link"
-    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "short_title"
@@ -39,6 +37,8 @@ ActiveRecord::Schema.define(:version => 20100702092157) do
     t.integer  "text_word_count"
     t.integer  "blind_count"
     t.integer  "deafblind_count"
+    t.string   "state"
+    t.date     "text_updated_on"
   end
 
   add_index "bills", ["drumbone_id"], :name => "index_bills_on_guid"

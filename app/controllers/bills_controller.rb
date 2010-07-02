@@ -1,5 +1,5 @@
 class BillsController < ApplicationController
-  before_filter :ensure_admin, :only => [:update, :destroy]
+  before_filter :ensure_admin, :only => [:new, :create, :update, :destroy]
   
   def index
     @bills = Bill.paginate(:page => params[:page], :include => [:ratings, :cosponsors], :conditions => {:deleted_at => nil}, :order => sort_order('last_action_on DESC'))
@@ -20,6 +20,20 @@ class BillsController < ApplicationController
   
   def summarize
     @bill = Bill.find(params[:id])
+  end
+  
+  def new
+    @bill = Bill.new
+  end
+  
+  def create
+    @bill = Bill.new(params[:bill])
+    if @bill.save
+      flash[:notice] = "Successfully added Bill."
+      redirect_to bills_path
+    else
+      render :action => 'new'
+    end
   end
   
   def update

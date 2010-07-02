@@ -18,8 +18,8 @@
 		<td><%= mail_to user.email, user.full_name %></td>
 		<td><%= check_box_tag "author_ids[]", user.id, user.author? %></td>
 		<td><%= check_box_tag "admin_ids[]", user.id, user.admin? %></td>
-		<td><%= user.country.name %></td>
-		<td><%= user.state.name %></td>
+		<td><%= user.country ? user.country.name : nil %></td>
+		<td><%= user.state ? user.state.name : nil %></td>
 		<td><%= user.current_login_at %></td>
 	</tr>
 <% end %>

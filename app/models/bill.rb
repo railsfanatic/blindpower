@@ -40,6 +40,8 @@ class Bill < ActiveRecord::Base
     self.summary_word_count = self.summary.to_s.word_count
     self.blind_count = self.find_blind.count
     self.deafblind_count = self.find_deafblind.count
+    # save some space for untracked bills
+    self.bill_html = "" if self.deleted_at
   end
   
   def bill_title

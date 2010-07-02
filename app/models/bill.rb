@@ -79,12 +79,19 @@ class Bill < ActiveRecord::Base
     r
   end
   
+  def find_visually_impaired
+    r = []
+    paragraphs.each { |p| r << p if p =~ /visually\bimpaired/i }
+    r
+  end
+  
   def update_counts
     self.cosponsors_count = self.cosponsors.count
     self.text_word_count = self.bill_html.to_s.word_count
     self.summary_word_count = self.summary.to_s.word_count
     self.blind_count = self.find_blind.count
     self.deafblind_count = self.find_deafblind.count
+    self.visually_impaired_count = self.find_visually_impaired.count
     
     # save some space for untracked (deleted) bills
     self.bill_html = "" if self.deleted_at

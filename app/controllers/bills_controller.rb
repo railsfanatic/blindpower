@@ -11,6 +11,7 @@ class BillsController < ApplicationController
     @cosponsor_states = @bill.cosponsors.group_by { |c| c.state }
     @find_blind = @bill.find_blind
     @find_deafblind = @bill.find_deafblind
+    @find_visually_impaired = @bill.find_visually_impaired
     @comment = @bill.comments.new
   end
   

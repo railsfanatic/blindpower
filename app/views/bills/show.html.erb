@@ -47,14 +47,21 @@
 
 <h4><%= pluralize(@find_blind.length, "reference") %> to &lsquo;blind&rsquo;</h4>
 <ol>
-<% @bill.find_blind.each do |p| %>
+<% @find_blind.each do |p| %>
 	<li><%= p %></li>
 <% end %>
 </ol>
 
 <h4><%= pluralize(@find_deafblind.length, "reference") %> to &lsquo;deaf-blind&rsquo;</h4>
 <ol>
-<% @bill.find_deafblind.each do |p| %>
+<% @find_deafblind.each do |p| %>
+	<li><%= p %></li>
+<% end %>
+</ol>
+
+<h4><%= pluralize(@find_visually_impaired.length, "reference") %> to &lsquo;visually impaired&rsquo;</h4>
+<ol>
+<% @find_visually_impaired.each do |p| %>
 	<li><%= p %></li>
 <% end %>
 </ol>

@@ -4,7 +4,7 @@ class AddWordCountsToBill < ActiveRecord::Migration
     add_column :bills, :text_word_count, :integer
     add_column :bills, :blind_count, :integer
     add_column :bills, :deafblind_count, :integer
-  end
+ end
 
   def self.down
     remove_column :bills, :deafblind_count, :integer

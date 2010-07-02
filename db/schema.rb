@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(:version => 20100702092157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "short_title"
-    t.string   "official_title"
+    t.text     "official_title"
     t.text     "summary"
     t.integer  "sponsor_id"
     t.date     "last_action_on"

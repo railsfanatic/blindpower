@@ -20,7 +20,7 @@ class Bill < ActiveRecord::Base
   
   validates_presence_of :bill_number, :bill_type, :congress
   
-  validates_uniqueness_of :drumbone_id, :on => :create, :message => "must be unique"
+  validates_uniqueness_of :drumbone_id, :on => :create, :message => "is already in the database"
   
   def validate
     if errors.empty?

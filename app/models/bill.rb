@@ -81,7 +81,7 @@ class Bill < ActiveRecord::Base
   
   def find_visually_impaired
     r = []
-    paragraphs.each { |p| r << p if p =~ /visually\bimpaired/i }
+    paragraphs.each { |p| r << p if p =~ /visually\simpaired/i }
     r
   end
   

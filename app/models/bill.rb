@@ -4,9 +4,33 @@ class Bill < ActiveRecord::Base
   has_many :comments, :as => :commentable, :dependent => :delete_all
   belongs_to :sponsor, :class_name => "Legislator"
   has_and_belongs_to_many :cosponsors, :order => :state, :join_table => "bills_cosponsors", :class_name => "Legislator"
-  acts_as_rateable
+  before_validation_on_create :set_drumbone_id
   before_save :update_counts
   after_create :update_me
+  
+  acts_as_rateable
+  
+  HUMANIZED_ATTRIBUTES = {
+    :drumbone_id => "Bill number"
+  }
+
+  def self.human_attribute_name(attr)
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+  
+  validates_presence_of :bill_number, :bill_type, :congress
+  
+  validates_uniqueness_of :drumbone_id, :on => :create, :message => "must be unique"
+  
+  def validate
+    if errors.empty?
+      begin
+        Drumbone::Bill.find :bill_id => self.drumbone_id
+      rescue
+        errors.add("The requested bill", "does not exist")
+      end
+    end
+  end
   
   def to_param
     "#{id}-#{govtrack_id}"
@@ -61,8 +85,13 @@ class Bill < ActiveRecord::Base
     self.summary_word_count = self.summary.to_s.word_count
     self.blind_count = self.find_blind.count
     self.deafblind_count = self.find_deafblind.count
-    # save some space for untracked bills
+    
+    # save some space for untracked (deleted) bills
     self.bill_html = "" if self.deleted_at
+  end
+  
+  def set_drumbone_id
+    self.drumbone_id = make_drumbone_id(self)
   end
   
   def self.create_from_feed
@@ -105,11 +134,11 @@ class Bill < ActiveRecord::Base
   def update_me
     self.drumbone_id ||= make_drumbone_id(self)
     drumbone = Drumbone::Bill.find :bill_id => self.drumbone_id
-    if self.dirty? ||
-     !self.text_updated_on ||
-     self.text_updated_on < Date.parse(drumbone.last_action.acted_at) ||
-     self.last_action_on != Date.parse(drumbone.last_action.acted_at)
-     
+    if drumbone && (self.dirty? ||
+          !self.text_updated_on ||
+          self.text_updated_on < Date.parse(drumbone.last_action.acted_at) ||
+          self.last_action_on != Date.parse(drumbone.last_action.acted_at)
+      )
       self.short_title = drumbone.short_title
       self.official_title = drumbone.official_title
       self.last_action_text = drumbone.last_action.text
@@ -159,8 +188,10 @@ class Bill < ActiveRecord::Base
       end
       self.dirty = false
       self.save
+      true
+    else
+      false
     end
-    true
   end
   
   private

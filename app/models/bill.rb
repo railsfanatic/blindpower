@@ -37,8 +37,8 @@ class Bill < ActiveRecord::Base
   
   def update_counts
     self.cosponsors_count = self.cosponsors.count
-    self.text_word_count = self.bill_html.to_s.word_count
-    self.summary_word_count = self.summary.to_s.word_count
+    self.text_word_count = self.bill_html.word_count
+    self.summary_word_count = self.summary.word_count
     self.blind_count = self.find_blind.count
     self.deafblind_count = self.find_deafblind.count
   end

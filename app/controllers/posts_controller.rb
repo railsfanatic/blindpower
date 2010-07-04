@@ -9,7 +9,8 @@ class PostsController < ApplicationController
   end
   
   def show
-    if admin?
+    if current_user
+      # need to fix this later!!!!!!!!
       @post = Post.find(params[:id])
     else
       @post = Post.published.find(params[:id])

@@ -56,6 +56,6 @@ class UsersController < ApplicationController
   private
   
   def list_stylesheets
-    @stylesheets = Dir.glob('public/stylesheets/*.css').map! { |file| File.basename(file, ".css") }
+    @stylesheets = Dir.glob('public/stylesheets/*.css').map!{ |file| File.basename(file, ".css") }.delete_if{ |f| f == "all" }
   end
 end

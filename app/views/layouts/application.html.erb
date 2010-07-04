@@ -3,14 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title><%= h(yield(:title) || "Untitled") %></title>
-    <%= stylesheet_link_tag "default" %>
+		<% if current_user %>
+			<%= stylesheet_link_tag current_user.stylesheet %>
+		<% else %>
+    	<%= stylesheet_link_tag "default" %>
+		<% end %>
 		<%= javascript_include_tag :all %>
     <%= yield(:head) %>
   </head>
   <body>
     <div id="container">
-	
+			<h1 id="title"><%= h(yield(:title)) %></h1>
+			
 			<%= flash_messages %>
+			
 			<div id="skip"><a href="#main" title="Skip Navigation">Skip Navigation</a></div>
 			
 			<% if current_user %>

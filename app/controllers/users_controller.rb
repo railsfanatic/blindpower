@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :authenticate, :except => [:new, :create, :show]
   before_filter :ensure_app_admin, :only => [:index, :update_multiple]
+  before_filter :list_stylesheets, :only => [:new, :create, :edit, :update]
   
   def index
     @users = User.all(:order => "created_at DESC")
@@ -8,7 +9,6 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new
-    @stylesheets = Dir.glob('public/stylesheets/*.css').map! { |file| File.basename(file, ".css") }
     session[:captcha_value] = 10 + rand(90)
   end
   
@@ -29,7 +29,6 @@ class UsersController < ApplicationController
   
   def edit
     @user = current_user
-    @stylesheets = Dir.glob('public/stylesheets/*.css').map! { |file| File.basename(file, ".css") }
   end
   
   def update
@@ -52,5 +51,11 @@ class UsersController < ApplicationController
     User.update_all(["admin = ?", true], :id => params[:admin_ids]) if params[:admin_ids]
     flash[:notice] = "Successfully updated users."
     redirect_to users_path
+  end
+  
+  private
+  
+  def list_stylesheets
+    @stylesheets = Dir.glob('public/stylesheets/*.css').map! { |file| File.basename(file, ".css") }
   end
 end

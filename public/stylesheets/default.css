@@ -27,7 +27,7 @@ a {
   margin-top: 20px;
 }
 
-#flash_notice, #flash_error {
+#flash_notice, #flash_error, #flash_warning {
   padding: 5px 8px;
   margin: 10px 0;
 }
@@ -40,6 +40,11 @@ a {
 #flash_error {
   background-color: #FCC;
   border: solid 1px #C66;
+}
+
+#flash_warning {
+  background-color: #FFC;
+  border: solid 1px #CC6;
 }
 
 .fieldWithErrors {
@@ -131,4 +136,27 @@ td {
 
 td.nowrap {
 	white-space: nowrap;
+}
+
+#skip a
+{
+	position:absolute; 
+	top:auto; 
+	width:1px; 
+	height:1px; 
+	overflow:hidden;
+}
+ 
+#skip a:focus 
+{
+	width:auto; 
+	height:auto; 
+}
+
+.hidden {
+	position:absolute;
+	top:auto;
+	width:1px;
+	height:1px;
+	overflow:hidden;
 }

@@ -1,8 +1,10 @@
 rails -v 2.3.8
 authlogic
 bluecloth
+RedCloth
 linguistics
 feedzirra
 json
 drumbone
 will_paginate
+vestal_versions

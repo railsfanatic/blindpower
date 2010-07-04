@@ -28,6 +28,7 @@ class UsersController < ApplicationController
   
   def edit
     @user = current_user
+    @stylesheets = Dir.glob('public/stylesheets/*.css').map! { |file| File.basename(file, ".css") }
   end
   
   def update

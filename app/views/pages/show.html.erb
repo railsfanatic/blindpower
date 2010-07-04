@@ -1,0 +1,6 @@
+<% title @page.title %>
+<%= textilize @page.content %>
+
+<% if admin? %>
+<p>Version: <%= @page.version %></p>
+<% end %>

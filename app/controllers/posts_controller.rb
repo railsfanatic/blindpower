@@ -1,16 +1,19 @@
 class PostsController < ApplicationController
   before_filter :authenticate, :except => [:index, :show]
   before_filter :ensure_app_admin, :only => [:destroy_multiple]
+  before_filter :find_authorized, :only => [:edit, :update, :destroy]
   
   def index
-    @posts = Post.approved(20)
-    @rejected_posts = Post.recent(100, :approved => false) if admin?
-    @deleted_posts = Post.deleted if app_admin?
+    @posts = Post.published.all(:limit => 20)
     @post_months = @posts.group_by { |p| p.created_at.beginning_of_day }
   end
   
   def show
-    @post = Post.find(params[:id])
+    if admin?
+      @post = Post.find(params[:id])
+    else
+      @post = Post.published.find(params[:id])
+    end
     @comment = @post.comments.new
   end
   
@@ -81,5 +84,15 @@ class PostsController < ApplicationController
       flash[:error] = "No Post(s) selected."
     end
     redirect_to posts_path
+  end
+  
+  private
+  
+  def find_authorized
+    @post = Post.find(params[:id])
+    unless admin? || @post.user == current_user
+      flash[:error] = "Unauthorized!"
+      redirect_to posts_path
+    end
   end
 end

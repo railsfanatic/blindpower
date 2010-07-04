@@ -1,0 +1,28 @@
+:output:
+  User:
+    :options:
+      :fields:
+      - id
+      - username
+      - email
+      - first_name
+      - last_name
+      - admin?
+      - author?
+  Post:
+    :options:
+      :fields:
+      - id
+      - user_id
+      - title
+      - position
+      - approved?
+      - deleted_at
+  Bill:
+    :options:
+      :fields:
+      - full_number
+      - title
+      - last_action_on
+      - state
+      - deleted_at

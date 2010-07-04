@@ -9,10 +9,8 @@
 </p>
 
 <p>
-	<strong>Keywords:</strong> 
-	<% @post.tags.each do |tag| %>
-		<%= tag.name %>,
-	<% end %>
+	<strong>Keywords:</strong>
+	<%= @post.tags.join(", ") %>
 </p>
 
 <% unless @post.comments.empty? %>

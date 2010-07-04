@@ -1,6 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :pages
+  map.static "static/:permalink", :controller => "pages", :action => "show"
+  
   map.resources :suggestions
-
+  
   map.resources :bills, :has_many => :comments, :shallow => true, :member => { :summarize => :get, :read => :get }
   
   map.resources :comments, :only => [:index], :collection => {:destroy_multiple => :delete}, :member => {:approve => :put, :reject => :put}
@@ -13,6 +16,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :posts, :has_many => :comments, :shallow => true, :collection => { :destroy_multiple => :delete }
   
   map.resources :users, :collection => { :update_multiple => :put }
+  
+  map.javascripts 'javascripts/:action.:format', :controller => "javascripts"
   
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -46,14 +51,14 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  map.root :controller => "welcome"
+  map.root :controller => "pages", :action => :show, :permalink => "home"
 
   # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action.:format'
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  # map.connect ':controller/:action.:format'
+  # map.connect ':controller/:action/:id'
+  # map.connect ':controller/:action/:id.:format'
 end

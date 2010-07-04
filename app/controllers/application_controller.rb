@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
   def authenticate
     unless current_user
       session[:url] = request.url
+      flash[:warning] = "Please log in to access this resource."
       redirect_to login_url
     end
   end

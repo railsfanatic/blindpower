@@ -7,8 +7,15 @@ class Post < ActiveRecord::Base
   acts_as_list
   attr_accessor :new_tag_names
   
+  validates_presence_of :title, :body
+  
   before_create :check_for_spam
   after_save :create_tags
+  
+  named_scope :recent, :limit => 20, :order => "created_at DESC"
+  named_scope :published, :joins => :user, :conditions => { :deleted_at => nil, :users => {:author => true} }
+  named_scope :unpublished, :joins => :user, :conditions => { :deleted_at => nil, :users => {:author => false} }
+  named_scope :deleted, :conditions => "deleted_at IS NOT NULL"
   
   def create_tags
     unless new_tag_names.nil?
@@ -17,18 +24,6 @@ class Post < ActiveRecord::Base
         tags.create(:name => name) unless name.blank?
       end
     end
-  end
-  
-  def self.recent(limit = nil, conditions = nil)
-    all(:limit => limit, :joins => :user, :conditions => conditions, :order => "created_at DESC")
-  end
-  
-  def self.approved(limit = 100, conditions = nil)
-    recent(limit, { :approved => true, :deleted_at => nil, :users => { :author => true } } )
-  end
-  
-  def self.deleted(limit = 100)
-    recent(limit, "deleted_at IS NOT NULL" )
   end
   
   def request=(request)

@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new
+    @stylesheets = Dir.glob('public/stylesheets/*.css').map! { |file| File.basename(file, ".css") }
     session[:captcha_value] = 10 + rand(90)
   end
   

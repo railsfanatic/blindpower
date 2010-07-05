@@ -24,14 +24,8 @@ class PostsController < ApplicationController
   
   def create
     @post = current_user.posts.new(params[:post])
-    @post.request = request
     if @post.save
-      if @post.approved?
-        flash[:notice] = "Thanks for posting!"
-      else
-        flash[:error] = "Unfortunately this post is considered spam by Akismet. " + 
-                        "It will show up once it has been approved by a moderator."
-      end
+      flash[:notice] = "Thanks for posting!"
       redirect_to @post
     else
       render :action => 'new'

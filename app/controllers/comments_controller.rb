@@ -3,8 +3,7 @@ class CommentsController < ApplicationController
   
   def index
     @commentable = find_commentable
-    @approved_comments = Comment.recent(20, :approved => true)
-    @rejected_comments = Comment.recent(100, :approved => false) if admin?
+    @comments = Comment.recent
   end
   
   def show
@@ -15,15 +14,9 @@ class CommentsController < ApplicationController
     @commentable = find_commentable
     @comment = @commentable.comments.build(params[:comment])
     @comment.user = current_user
-    @comment.request = request
     
     if @comment.save
-      if @comment.approved?
-        flash[:notice] = "Thanks for the comment."
-      else
-        flash[:error] = "Unfortunately this comment is considered spam by Akismet. " + 
-                        "It will show up once it has been approved by a moderator."
-      end
+      flash[:notice] = "Thanks for the comment."
       redirect_to @commentable
     else
       redirect_to :back
@@ -58,18 +51,6 @@ class CommentsController < ApplicationController
     else
       flash[:error] = "No comments selected."
     end
-    redirect_to comments_path
-  end
-  
-  def approve
-    @comment = Comment.find(params[:id])
-    @comment.mark_as_ham!
-    redirect_to comments_path
-  end
-
-  def reject
-    @comment = Comment.find(params[:id])
-    @comment.mark_as_spam!
     redirect_to comments_path
   end
   

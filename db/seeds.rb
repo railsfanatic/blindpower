@@ -1,10 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#   
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Major.create(:name => 'Daley', :city => cities.first)
 country_states = {
   :US => ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Puerto Rico","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","Washington D.C.","West Virginia","Wisconsin","Wyoming"],
   :AU => ["Australian Capital Territory","New South Wales","Northern Territory","Queensland","South Australia","Tasmania","Victoria","Western Australia"],
@@ -18,20 +11,12 @@ country_states = {
   :GB => ["Avon","Bedfordshire","Berkshire","Buckinghamshire","Cambridgeshire","Cheshire","Cleveland","Cornwall","Cumbria","Derbyshire","Devon","Dorset","Durham","Essex","Gloucestershire","Hampshire","Hereford & Worcester","Hertfordshire","Humberside","Kent","Lancashire","Leicestershire","Lincolnshire","London","Manchester","Merseyside","Norfolk","Northamptonshire","Northumberland","Nottinghamshire","Oxfordshire","Shropshire","Somerset","Staffordshire","Suffolk","Surrey","Sussex","Tyne & Wear","Warwickshire","West Midlands","Wiltshire","Yorkshire", "Aberystwyth","Builth Wells","Brecon Beacons","Cardiff","Caernarfon","Fishguard","Holyhead","Llangollen","Pembrokshire","Snowdonia","Swansea", "Aberdeen City","Aberdeenshire","Angus","Argyll & Bute","Clackmannanshire","Dumfries & Galloway","Dundee City","East Ayrshire","East Dunbartonshire","East Lothian","East Renfrewshire","Edinburgh","Falkirk","Fife","Glasgow","Highland","Inverclyde","Midlothian","Moray","North Ayrshire","North Lanarkshire","Orkney","Perth & Kinross","Renfrewshire","Scottish Borders","Shetland","South Ayrshire","South Lanarkshire","Stirling","West Dunbartonshire","West Lothian","Western Isles"]
 }
 
-Country.delete_all
-State.delete_all
-
-if RAILS_ENV == 'production'
-  ActiveRecord::Base.connection.reset_pk_sequence!('countries')
-  ActiveRecord::Base.connection.reset_pk_sequence!('states')
-end
-
 open(File.join(File.dirname(__FILE__), "countries.txt")) do |countries|
   countries.read.each_line do |country|
     code, name = country.chomp.split("|")
-    c = Country.create!(:name => name, :code => code)
+    c = Country.find_or_create_by_name(name, :code => code)
     if country_states[code.to_sym]
-      country_states[code.to_sym].each { |state| c.states.create(:name => state) }
+      country_states[code.to_sym].each { |state| c.states.find_or_create_by_name(state) }
     end
   end
 end

@@ -1,5 +1,22 @@
 <% title "Suggestions" %>
 
+<p>The suggestions area enables users to post concisely-written
+	suggestions on our platform. These suggestions can each be no longer
+	than 140 characters in length, the same limit imposed on tweets on the
+	popular Twitter service. This will encourage people to articulate
+	their ideas in a brief manner to allow rapid review by the community.
+	Of course, you can link your suggestion to a blog entry if you wish
+	to elaborate further.</p>
+
+<p>Suggestions can be one of four kinds: "legislative," "activism," "social,"
+	and "web site." Legislative relate to laws that should be enacted or
+	changed. Activism relates to activities that educate or engage the public
+	in the blind community. Social pertains to activities for the blind
+	community itself. Finally, web site suggestions are ideas that can improve
+	the Blind Power web site.</p>
+
+<p>Suggest away!</p>
+
 <% @suggestion_kinds.sort.each do |kind, suggestions| %>
   <h3><%= kind %></h3>
 	<ul>

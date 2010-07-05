@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100704164511) do
+ActiveRecord::Schema.define(:version => 20100704235703) do
 
   create_table "bills", :force => true do |t|
     t.string   "drumbone_id"
@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(:version => 20100704164511) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "post_id"
   end
 
   add_index "suggestions", ["kind"], :name => "index_suggestions_on_kind"

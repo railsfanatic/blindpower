@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Bill do
   it "should create and properly retrieve a bill's information given valid type, number, and congress" do
-    bill = Factory(:bill)
+    bill = Bill.create!(:bill_type => 'hr', :bill_number => 1034, :congress => 111)
     bill.govtrack_id.should == "hr111-1034"
     bill.drumbone_id.should == "hres1034-111"
     bill.official_title.should =~ /Braille/
@@ -12,7 +12,7 @@ describe Bill do
   end
   
   it "should clear out bill_html, sponsor, and cosponsors on deletion" do
-    bill = Factory(:bill)
+    bill = Bill.create!(:bill_type => 'hr', :bill_number => 1034, :congress => 111)
     bill.update_attribute(:deleted_at, Time.now)
     bill.bill_html.should be_nil
     bill.sponsor.should be_nil
@@ -20,7 +20,7 @@ describe Bill do
   end
   
   it "should restore all original info on deleted_at = nil" do
-    bill = Factory(:bill)
+    bill = Bill.create!(:bill_type => 'hr', :bill_number => 1034, :congress => 111)
     bill.update_attribute(:deleted_at, Time.now)
     bill.update_attribute(:deleted_at, nil)
     bill.govtrack_id.should == "hr111-1034"

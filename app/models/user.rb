@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :suggestions
   
+  def blah
+    "test"
+  end
+  
   def full_name
     first_name + " " + last_name
   end

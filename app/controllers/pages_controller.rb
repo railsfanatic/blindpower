@@ -8,7 +8,8 @@ class PagesController < ApplicationController
   def show
     if params[:permalink]
       @page = Page.find_by_permalink(params[:permalink])
-      raise ActiveRecord::RecordNotFound, "Page not found" if @page.nil?
+      #raise ActiveRecord::RecordNotFound, "Page not found" if @page.nil?
+      redirect_to posts_url if @page.nil?
     else
       @page = Page.find(params[:id])
     end

@@ -31,3 +31,4 @@ config.gem "koujou"
 config.gem "faker"
 config.gem "webrat"
 config.gem "rspec", :lib => false
+config.gem "rspec-rails", :lib => false

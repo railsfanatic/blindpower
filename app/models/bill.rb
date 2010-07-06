@@ -41,6 +41,10 @@ class Bill < ActiveRecord::Base
     "#{id}-#{drumbone_id}"
   end
   
+  def title
+    "#{full_number}: #{short_title}"
+  end
+  
   def full_number
     case bill_type
       when 'h' then 'H.R.'

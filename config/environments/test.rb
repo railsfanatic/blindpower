@@ -32,4 +32,7 @@ config.gem "rspec-rails", :lib => false
 config.gem "factory_girl"
 config.gem "faker"
 config.gem "populator"
+config.gem "webrat", :lib => false
+config.gem "cucumber", :lib => false
+config.gem "cucumber-rails", :lib => false
 

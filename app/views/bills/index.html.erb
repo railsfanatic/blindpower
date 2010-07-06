@@ -22,7 +22,7 @@
 		<td class="nowrap"><%= link_to bill.full_number, bill %></td>
 		<td><%= truncate(bill.official_title, :length => 150) %></td>
 		<td class="nowrap"><%= bill.last_action_on.strftime("%m/%d/%y") %></td>
-		<td><%= bill.status %></td>
+		<td><%= bill.state %></td>
 		<td class="nowrap"><%= bill.cosponsors.count %></td>
 		<td class="nowrap"><%= bill.rating.zero? ? "N/A" : bill.rating %></td>
 		<td class="nowrap">

@@ -138,19 +138,10 @@ td.nowrap {
 	white-space: nowrap;
 }
 
-#skip a
+#skip
 {
-	position:absolute; 
-	top:auto; 
-	width:1px; 
-	height:1px; 
-	overflow:hidden;
-}
- 
-#skip a:focus 
-{
-	width:auto; 
-	height:auto; 
+	text-align: center;
+	font-size: 10px;
 }
 
 .hidden {

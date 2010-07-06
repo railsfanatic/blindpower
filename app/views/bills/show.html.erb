@@ -1,23 +1,23 @@
-<% title @bill.title %>
+<% title @bill.short_title %>
 
 <p>
   <strong>Congress:</strong>
-  <%=h @bill.congress %>
-</p>
-<p>
-  <strong>Bill Number:</strong>
-  <%=h @bill.full_number %>
+  <%=h @bill.congress.ordinal %>
 </p>
 <p>
   <strong>Title:</strong>
   <%=h @bill.title %>
 </p>
 <p>
+  <strong>Official Title:</strong>
+  <%=h @bill.official_title %>
+</p>
+<p>
 	<%= link_to "Skip to Comments", :anchor => "comments" %>
 </p>
 <p>
   <strong>Status:</strong>
-  <%=h @bill.status %>
+  <%=h @bill.state %>
 </p>
 <p>
   <strong>Summary:</strong>
@@ -45,21 +45,21 @@
   <%=h @bill.average_rating %>
 </p>
 
-<h4><%= pluralize(@find_blind.length, "reference") %> to &lsquo;blind&rsquo;</h4>
+<h4><%= pluralize(@find_blind.length, "paragraph") %> containing &lsquo;blind&rsquo;</h4>
 <ol>
 <% @find_blind.each do |p| %>
 	<li><%= p %></li>
 <% end %>
 </ol>
 
-<h4><%= pluralize(@find_deafblind.length, "reference") %> to &lsquo;deaf-blind&rsquo;</h4>
+<h4><%= pluralize(@find_deafblind.length, "paragraph") %> containing &lsquo;deaf-blind&rsquo;</h4>
 <ol>
 <% @find_deafblind.each do |p| %>
 	<li><%= p %></li>
 <% end %>
 </ol>
 
-<h4><%= pluralize(@find_visually_impaired.length, "reference") %> to &lsquo;visually impaired&rsquo;</h4>
+<h4><%= pluralize(@find_visually_impaired.length, "paragraph") %> containing &lsquo;visually impaired&rsquo;</h4>
 <ol>
 <% @find_visually_impaired.each do |p| %>
 	<li><%= p %></li>
@@ -84,17 +84,15 @@
 </table>
 <% end %>
 
-<% unless @bill.comments.empty? %>
-  <h4 id="comments_count">
-    <a name="comments"><%= pluralize @bill.comments.approved.size, 'comment' %></a>
-  </h4>
-  <div id="comments">
-    <%= render @bill.comments.approved %>
-  </div>
-<% end %>
+<div id="comments">
+	<h4 id="comments_count">
+	  <%= pluralize @bill.comments.size, 'comment' %>
+	</h4>
+  <%= render @bill.comments %>
 
-<div>
-  <%= render :partial => 'comments/form' %>
+	<div>
+	  <%= render :partial => 'comments/form' %>
+	</div>
 </div>
 
 <p>

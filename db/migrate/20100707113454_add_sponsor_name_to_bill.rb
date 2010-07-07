@@ -4,10 +4,12 @@ class AddSponsorNameToBill < ActiveRecord::Migration
     
     Bill.reset_column_information
     Bill.all.each do |bill|
-      bill.update_all(:sponsor_name => bill.sponsor.last_name, :id => bill.id)
+      unless bill.sponsor.nil?
+        Bill.update_all(["sponsor_name = ?", bill.sponsor.last_name], ["id = ?", bill.id])
+      end
     end
   end
-
+  
   def self.down
     remove_column :bills, :sponsor_name
   end

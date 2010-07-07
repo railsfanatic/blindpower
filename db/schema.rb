@@ -66,30 +66,30 @@ ActiveRecord::Schema.define(:version => 20100707121702) do
   end
 
   create_table "legislators", :force => true do |t|
-    t.string    "first_name"
-    t.string    "last_name"
-    t.integer   "govtrack_id"
-    t.string    "bioguide_id"
-    t.string    "title"
-    t.string    "nickname"
-    t.string    "name_suffix"
-    t.integer   "district"
-    t.string    "state"
-    t.string    "party"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.integer   "sponsored_count",   :default => 0
-    t.integer   "cosponsored_count", :default => 0
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "govtrack_id"
+    t.string   "bioguide_id"
+    t.string   "title"
+    t.string   "nickname"
+    t.string   "name_suffix"
+    t.integer  "district"
+    t.string   "state"
+    t.string   "party"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "sponsored_count",   :default => 0
+    t.integer  "cosponsored_count", :default => 0
   end
 
   add_index "legislators", ["bioguide_id"], :name => "index_legislators_on_bioguide_id"
 
   create_table "pages", :force => true do |t|
-    t.string    "title"
-    t.string    "permalink"
-    t.text      "content"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.string   "title"
+    t.string   "permalink"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "posts", :force => true do |t|
@@ -124,13 +124,13 @@ ActiveRecord::Schema.define(:version => 20100707121702) do
   end
 
   create_table "suggestions", :force => true do |t|
-    t.integer   "user_id"
-    t.string    "kind"
-    t.string    "content",    :limit => 140
-    t.timestamp "deleted_at"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.integer   "post_id"
+    t.integer  "user_id"
+    t.string   "kind"
+    t.string   "content",    :limit => 140
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "post_id"
   end
 
   add_index "suggestions", ["kind"], :name => "index_suggestions_on_kind"
@@ -143,51 +143,51 @@ ActiveRecord::Schema.define(:version => 20100707121702) do
   end
 
   create_table "users", :force => true do |t|
-    t.string    "username"
-    t.string    "email"
-    t.string    "crypted_password"
-    t.string    "password_salt"
-    t.string    "persistence_token"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.boolean   "admin"
-    t.integer   "condition_id"
-    t.string    "first_name"
-    t.string    "last_name"
-    t.string    "address"
-    t.string    "city"
-    t.string    "zip_code"
-    t.string    "phone"
-    t.date      "birthdate"
-    t.string    "public"
-    t.text      "intro"
-    t.string    "single_access_token"
-    t.string    "perishable_token"
-    t.integer   "login_count",         :default => 0
-    t.integer   "failed_login_count",  :default => 0
-    t.timestamp "last_request_at"
-    t.timestamp "current_login_at"
-    t.timestamp "last_login_at"
-    t.string    "current_login_ip"
-    t.string    "last_login_ip"
-    t.string    "time_zone"
-    t.integer   "country_id"
-    t.integer   "state_id"
-    t.boolean   "author",              :default => false,     :null => false
-    t.string    "stylesheet",          :default => "default"
+    t.string   "username"
+    t.string   "email"
+    t.string   "crypted_password"
+    t.string   "password_salt"
+    t.string   "persistence_token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "admin"
+    t.integer  "condition_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "zip_code"
+    t.string   "phone"
+    t.date     "birthdate"
+    t.string   "public"
+    t.text     "intro"
+    t.string   "single_access_token"
+    t.string   "perishable_token"
+    t.integer  "login_count",         :default => 0
+    t.integer  "failed_login_count",  :default => 0
+    t.datetime "last_request_at"
+    t.datetime "current_login_at"
+    t.datetime "last_login_at"
+    t.string   "current_login_ip"
+    t.string   "last_login_ip"
+    t.string   "time_zone"
+    t.integer  "country_id"
+    t.integer  "state_id"
+    t.boolean  "author",              :default => false,     :null => false
+    t.string   "stylesheet",          :default => "default"
   end
 
   create_table "versions", :force => true do |t|
-    t.integer   "versioned_id"
-    t.string    "versioned_type"
-    t.integer   "user_id"
-    t.string    "user_type"
-    t.string    "user_name"
-    t.text      "changes"
-    t.integer   "number"
-    t.string    "tag"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.integer  "versioned_id"
+    t.string   "versioned_type"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.string   "user_name"
+    t.text     "changes"
+    t.integer  "number"
+    t.string   "tag"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "versions", ["created_at"], :name => "index_versions_on_created_at"

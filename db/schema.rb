@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100707121702) do
+ActiveRecord::Schema.define(:version => 20100705213631) do
 
   create_table "bills", :force => true do |t|
     t.string   "drumbone_id"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20100707121702) do
     t.date     "last_action_on"
     t.text     "last_action_text"
     t.date     "enacted_on"
-    t.float    "average_rating",          :default => 0.0,   :null => false
+    t.float    "average_rating",          :default => 0.0, :null => false
     t.integer  "cosponsors_count",        :default => 0
     t.string   "govtrack_id"
     t.text     "bill_html"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(:version => 20100707121702) do
     t.string   "state"
     t.date     "text_updated_on"
     t.integer  "visually_impaired_count"
-    t.boolean  "hidden",                  :default => false
-    t.string   "sponsor_name"
+    t.datetime "deleted_at"
+    t.integer  "deleted_by"
   end
 
   add_index "bills", ["drumbone_id"], :name => "index_bills_on_guid"
@@ -78,8 +78,6 @@ ActiveRecord::Schema.define(:version => 20100707121702) do
     t.string   "party"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sponsored_count",   :default => 0
-    t.integer  "cosponsored_count", :default => 0
   end
 
   add_index "legislators", ["bioguide_id"], :name => "index_legislators_on_bioguide_id"
@@ -99,6 +97,8 @@ ActiveRecord::Schema.define(:version => 20100707121702) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
+    t.datetime "deleted_at"
+    t.integer  "deleted_by"
   end
 
   create_table "posts_tags", :id => false, :force => true do |t|

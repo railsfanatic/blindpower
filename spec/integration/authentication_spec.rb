@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Authentication" do
   context "Login Page" do
     it "should accept a valid username and password" do
-      Factory(:user, :username => "bob", :password => "secret")
+      User.koujou_create(:username => "bob", :password => "secret")
       visit login_url
       fill_in "Username", :with => "bob"
       fill_in "Password", :with => "secret"
@@ -12,7 +12,7 @@ describe "Authentication" do
     end
   
     it "should reject a bad username and password" do
-      Factory(:user, :username => "bob", :password => "secret")
+      User.koujou_create(:username => "bob", :password => "secret")
       visit login_url
       fill_in "Username", :with => "bob"
       fill_in "Password", :with => "wrong"
@@ -21,7 +21,7 @@ describe "Authentication" do
     end
   
     it "should reject too many failed logins" do
-      Factory(:user, :username => "badguy", :password => "secret")
+      User.koujou_create(:username => "badguy", :password => "secret")
       visit login_url
       11.times do
         fill_in "Username", :with => "badguy"

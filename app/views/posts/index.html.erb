@@ -9,14 +9,8 @@
 	<p><%= link_to "New Blog Entry", new_post_path %></p>
 <% end %>
 
-<% if app_admin? %>
+<% if app_admin? && !Post.unpublished.empty? %>
 	<h3>Unpublished Posts</h3>
 	<%= render Post.unpublished %>
-	
-	<h3>Deleted Posts</h3>
-	<% form_tag destroy_multiple_posts_path, :method => :delete do %>
-	<%= render Post.deleted %>
-	<p><%= submit_tag "Destroy Selected", :confirm => "Permanently destroy all selected Posts?" %></p>
-	<% end %>
 <% end %>
 

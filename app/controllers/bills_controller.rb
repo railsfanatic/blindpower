@@ -1,13 +1,13 @@
 class BillsController < ApplicationController
-  before_filter :ensure_admin, :only => [:new, :create, :update, :destroy]
+  before_filter :ensure_app_admin, :except => [:index, :show, :read, :summarize]
   
   def index
-    @bills = Bill.paginate(:page => params[:page], :include => [:ratings, :cosponsors], :conditions => {:deleted_at => nil}, :order => sort_order('last_action_on DESC'))
-    @deleted_bills = Bill.all(:conditions => "deleted_at IS NOT NULL", :include => :ratings) if admin?
+    @bills = Bill.visible.paginate(:page => params[:page], :include => [:ratings, :cosponsors], :order => sort_order('last_action_on DESC'))
+    @hidden_bills = Bill.hidden if admin?
   end
   
   def show
-    @bill = Bill.find(params[:id], :include => [:sponsor, :cosponsors, :comments])
+    @bill = Bill.visible.find(params[:id], :include => [:sponsor, :cosponsors, :comments])
     @cosponsor_states = @bill.cosponsors.group_by { |c| c.state }
     @find_blind = @bill.find_blind
     @find_deafblind = @bill.find_deafblind
@@ -16,11 +16,11 @@ class BillsController < ApplicationController
   end
   
   def read
-    @bill = Bill.find(params[:id])
+    @bill = Bill.visible.find(params[:id])
   end
   
   def summarize
-    @bill = Bill.find(params[:id])
+    @bill = Bill.visible.find(params[:id])
   end
   
   def new
@@ -38,19 +38,25 @@ class BillsController < ApplicationController
   end
   
   def update
-    # TODO: Add code to update single bill from web
+    # Force bill to update
     @bill = Bill.find(params[:id])
-    if @bill.update_attribute(:deleted_at, nil)
-      flash[:notice] = "Successfully undeleted bill."
+    if @bill.update_attribute(:hidden, false)
+      flash[:notice] = "Successfully updated bill."
     end
-    redirect_to :back
+    redirect_to @bill
+  end
+  
+  def hide
+    @bill = Bill.find(params[:id])
+    @bill.update_attribute(:hidden, true)
+    flash[:notice] = "Bill marked as hidden."
+    redirect_to bills_path
   end
   
   def destroy
     @bill = Bill.find(params[:id])
-    @bill.update_attribute(:deleted_at, Time.now)
-    @bill.update_attribute(:deleted_by, current_user.id)
-    flash[:notice] = "Bill marked as deleted."
+    @bill.destroy
+    flash[:notice] = "Successfully destroyed bill."
     redirect_to bills_path
   end
 end

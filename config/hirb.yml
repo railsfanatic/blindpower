@@ -16,8 +16,6 @@
       - user_id
       - title
       - position
-      - approved?
-      - deleted_at
   Bill:
     :options:
       :fields:
@@ -25,4 +23,4 @@
       - title
       - last_action_on
       - state
-      - deleted_at
+      - ignored?

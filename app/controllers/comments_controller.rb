@@ -38,19 +38,9 @@ class CommentsController < ApplicationController
   end
   
   def destroy
-    @comment = Comment.find(params[:id])
+    find_authorized
     @comment.destroy
     flash[:notice] = "Successfully destroyed comment."
-    redirect_to comments_path
-  end
-  
-  def destroy_multiple
-    if params[:comment_ids]
-      Comment.destroy(params[:comment_ids])
-      flash[:notice] = "Successfully destroyed comments."
-    else
-      flash[:error] = "No comments selected."
-    end
     redirect_to comments_path
   end
   
@@ -64,4 +54,5 @@ class CommentsController < ApplicationController
     end
     nil
   end
+  
 end

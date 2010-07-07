@@ -27,6 +27,9 @@ class Bill < ActiveRecord::Base
   validates_presence_of :bill_number, :bill_type, :congress
   validates_uniqueness_of :drumbone_id, :on => :create, :message => "is already in the database"
   
+  named_scope :visible, :conditions => { :hidden => false }
+  named_scope :hidden, :conditions => { :hidden => true }
+  
   def validate
     if errors.empty?
       begin
@@ -118,7 +121,11 @@ class Bill < ActiveRecord::Base
   end
   
   def update_bill
-    if self.deleted_at.blank?
+    if self.hidden?
+      self.bill_html = nil
+      self.cosponsors = []
+      self.sponsor = nil
+    else
       drumbone = Drumbone::Bill.find :bill_id => self.drumbone_id
       if drumbone
         self.short_title = drumbone.short_title
@@ -181,10 +188,6 @@ class Bill < ActiveRecord::Base
       else
         false
       end
-    else
-      self.bill_html = nil
-      self.cosponsors = []
-      self.sponsor = nil
     end
   end
   

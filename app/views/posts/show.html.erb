@@ -17,10 +17,10 @@
 
 <% unless @post.comments.empty? %>
   <h4 id="comments_count">
-    <%= pluralize @post.comments.approved.size, 'comment' %>
+    <%= pluralize @post.comments.size, 'comment' %>
   </h4>
   <div id="comments">
-    <%= render @post.comments.approved %>
+    <%= render @post.comments %>
   </div>
 <% end %>
 
@@ -31,7 +31,7 @@
 <p>
 	<% if admin? || @post.user == current_user %>
   	<%= link_to "Edit", edit_post_path(@post) %> |
-  	<%= link_to "Delete", @post, :confirm => 'Really delete this post?', :method => :delete %> |
+  	<%= link_to "Destroy", @post, :confirm => 'Really destroy this post?', :method => :delete %> |
 	<% end %>
   <%= link_to "View All", posts_path %>
 </p>

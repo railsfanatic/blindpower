@@ -54,9 +54,27 @@ class ApplicationController < ActionController::Base
   
   def ensure_app_admin
     unless app_admin?
-      flash[:error] = "Unauthorized!"
-      redirect_to root_url
+      raise ActiveRecord::RecordNotFound, "Page not found"
     end
+  end
+  
+  protected
+  
+  def find_showable(options = {})
+    name = self.class.name.gsub(/Controller/, '').singularize
+    public_scope = options[:public_scope].blank? ? "" : "." + options[:public_scope]
+    eval "if admin?
+      #{name}.find(params[:id])
+    elsif current_user
+      current_user.#{name.underscore.pluralize}.find(params[:id])
+    else
+      #{name}#{public_scope}.find(params[:id])
+    end"
+  end
+  
+  def find_editable
+    editable = find_showable
+    return editable if admin? || editable.user == current_user
   end
   
   private

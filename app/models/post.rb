@@ -3,7 +3,8 @@ class Post < ActiveRecord::Base
   belongs_to :user
   belongs_to :deleted_by_user, :class_name => "User", :foreign_key => "deleted_by"
   has_and_belongs_to_many :tags
-  has_many :comments, :as => :commentable, :dependent => :delete_all
+  has_many :comments, :as => :commentable, :dependent => :destroy
+  has_many :suggestions
   acts_as_list
   attr_accessor :new_tag_names
   
@@ -12,9 +13,12 @@ class Post < ActiveRecord::Base
   after_save :create_tags
   
   named_scope :recent, :limit => 20, :order => "created_at DESC"
-  named_scope :published, :joins => :user, :conditions => { :deleted_at => nil, :users => {:author => true} }
-  named_scope :unpublished, :joins => :user, :conditions => { :deleted_at => nil, :users => {:author => false} }
-  named_scope :deleted, :conditions => "deleted_at IS NOT NULL"
+  named_scope :published, :joins => :user, :conditions => { :users => {:author => true} }
+  named_scope :unpublished, :joins => :user, :conditions => { :users => {:author => false} }
+  
+  def title_with_date
+    title + " " + created_at.to_s(:short)
+  end
   
   def create_tags
     unless new_tag_names.nil?
@@ -24,4 +28,11 @@ class Post < ActiveRecord::Base
       end
     end
   end
+  
+  after_destroy do
+    Tag.delete_all("id NOT IN (SELECT tag_id FROM posts_tags)")
+  end
 end
+
+
+

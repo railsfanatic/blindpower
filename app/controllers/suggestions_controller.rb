@@ -1,10 +1,10 @@
 class SuggestionsController < ApplicationController
   before_filter :authenticate
-  before_filter :find_authorized, :only => [:create, :edit, :update, :destroy]
   
   def index
     @suggestions = Suggestion.all
     @suggestion_kinds = @suggestions.group_by { |s| s.kind }
+    @suggestion = current_user.suggestions.new if current_user
   end
   
   def new
@@ -22,9 +22,11 @@ class SuggestionsController < ApplicationController
   end
   
   def edit
+    @suggestion = find_editable
   end
   
   def update
+    @suggestion = find_editable
     if @suggestion.update_attributes(params[:suggestion])
       flash[:notice] = "Successfully updated suggestion."
       redirect_to suggestions_path
@@ -37,15 +39,5 @@ class SuggestionsController < ApplicationController
     @suggestion.destroy
     flash[:notice] = "Successfully destroyed suggestion."
     redirect_to suggestions_url
-  end
-  
-  private
-  
-  def find_authorized
-    @suggestion = Suggestion.find(params[:id])
-    unless admin? || @suggestion.user == current_user
-      flash[:error] = "Unauthorized!"
-      redirect_to suggestions_path
-    end
   end
 end

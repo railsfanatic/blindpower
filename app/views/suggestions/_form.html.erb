@@ -8,11 +8,11 @@
     <%= f.label :content, "Suggestion (140 characters max)" %><br />
     <%= f.text_field :content, :size => 50, :maxlength => 140 %>
   </p>
-	<% unless current_user.posts.published.empty? %>
+	<%# unless current_user.posts.published.empty? %>
   <p>
     <%= f.label :post_id, "Related Blog Post" %><br />
-    <%= f.collection_select :post_id, current_user.posts.published, :id, :title, :include_blank => "(none)" %>
+    <%= f.collection_select :post_id, Post.all, :id, :title_with_date, :include_blank => "(none)" %>
   </p>
-	<% end %>
+	<%# end %>
   <p><%= f.submit %></p>
 <% end %>

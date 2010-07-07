@@ -116,12 +116,12 @@ class Bill < ActiveRecord::Base
     feed = Feedzirra::Feed.fetch_raw(feed_url)
     results = Feedzirra::Parser::Govtrack.parse(feed).search_results
     results.each do |result|
-      bill = new(
+      bill = self.new(
         :congress => result.congress,
         :bill_type => result.bill_type,
         :bill_number => result.bill_number
       )
-      create bill if bill.valid?
+      bill.save if bill.valid?
     end
   end
   

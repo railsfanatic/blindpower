@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100705213631) do
+ActiveRecord::Schema.define(:version => 20100707121702) do
 
   create_table "bills", :force => true do |t|
     t.string   "drumbone_id"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20100705213631) do
     t.date     "last_action_on"
     t.text     "last_action_text"
     t.date     "enacted_on"
-    t.float    "average_rating",          :default => 0.0, :null => false
+    t.float    "average_rating",          :default => 0.0,   :null => false
     t.integer  "cosponsors_count",        :default => 0
     t.string   "govtrack_id"
     t.text     "bill_html"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(:version => 20100705213631) do
     t.string   "state"
     t.date     "text_updated_on"
     t.integer  "visually_impaired_count"
-    t.datetime "deleted_at"
-    t.integer  "deleted_by"
+    t.boolean  "hidden",                  :default => false
+    t.string   "sponsor_name"
   end
 
   add_index "bills", ["drumbone_id"], :name => "index_bills_on_guid"
@@ -59,10 +59,10 @@ ActiveRecord::Schema.define(:version => 20100705213631) do
   end
 
   create_table "countries", :force => true do |t|
-    t.string    "name"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.string    "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "code"
   end
 
   create_table "legislators", :force => true do |t|
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(:version => 20100705213631) do
     t.string   "party"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sponsored_count",   :default => 0
+    t.integer  "cosponsored_count", :default => 0
   end
 
   add_index "legislators", ["bioguide_id"], :name => "index_legislators_on_bioguide_id"
@@ -97,8 +99,6 @@ ActiveRecord::Schema.define(:version => 20100705213631) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
-    t.datetime "deleted_at"
-    t.integer  "deleted_by"
   end
 
   create_table "posts_tags", :id => false, :force => true do |t|
@@ -107,20 +107,20 @@ ActiveRecord::Schema.define(:version => 20100705213631) do
   end
 
   create_table "ratings", :force => true do |t|
-    t.integer   "rating",        :default => 0
-    t.timestamp "created_at",                   :null => false
-    t.string    "rateable_type",                :null => false
-    t.integer   "rateable_id",                  :null => false
-    t.integer   "user_id",                      :null => false
+    t.integer  "rating",        :default => 0
+    t.datetime "created_at",                   :null => false
+    t.string   "rateable_type",                :null => false
+    t.integer  "rateable_id",                  :null => false
+    t.integer  "user_id",                      :null => false
   end
 
   add_index "ratings", ["user_id"], :name => "index_ratings_on_user_id"
 
   create_table "states", :force => true do |t|
-    t.integer   "country_id"
-    t.string    "name"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.integer  "country_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "suggestions", :force => true do |t|
@@ -136,10 +136,10 @@ ActiveRecord::Schema.define(:version => 20100705213631) do
   add_index "suggestions", ["kind"], :name => "index_suggestions_on_kind"
 
   create_table "tags", :force => true do |t|
-    t.string    "name"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.boolean   "approved",   :default => false
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "approved",   :default => false
   end
 
   create_table "users", :force => true do |t|

@@ -4,9 +4,11 @@ class AddCountsToLegislator < ActiveRecord::Migration
     add_column :legislators, :cosponsored_count, :integer, :default => 0
     
     Legislator.reset_column_information
-    Legislator.all.each do |l|
-      l.update_attribute :sponsored_count, l.sponsored.length
-      l.update_attribute :cosponsored_count, l.cosponsored.length
+    say_with_time "Updating sponsored and cosponsored counts for legislators..." do
+      Legislator.all.each do |legislator|
+        legislator.update_attribute :sponsored_count, legislator.sponsored.length
+        legislator.update_attribute :cosponsored_count, legislator.cosponsored.length
+      end
     end
   end
 

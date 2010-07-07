@@ -13,6 +13,10 @@ class RollupTwo < ActiveRecord::Migration
     
     # table countries
     add_column :countries, :code, :string
+    say_with_time "Running rake seed_countries..." do
+      Rake::Task["seed_countries"].invoke
+    end
+    say "DB contains #{Country.count} countries and #{State.count} states.", true
     
     # table pages
     create_table :pages do |t|
@@ -33,6 +37,10 @@ class RollupTwo < ActiveRecord::Migration
     
     # table users
     add_column :users, :stylesheet, :string, :default => "default"
+    User.reset_column_information
+    say_with_time "Setting all user stylesheets to 'default'..." do
+      User.update_all("stylesheet = 'default'")
+    end
     
     # table versions
     create_table :versions do |t|
@@ -51,6 +59,10 @@ class RollupTwo < ActiveRecord::Migration
       t.index :number
       t.index :tag
       t.index :created_at
+    end
+    Page.reset_column_information
+    say_with_time "Creating default homepage..." do
+      Page.create!(:title => "Homepage", :permalink => "home", :content => "Default home page.")
     end
   end
 
@@ -74,6 +86,7 @@ class RollupTwo < ActiveRecord::Migration
     drop_table :pages
     
     # table countries
+    remove_column :countries, :code
     
     # table comments
     add_column :comments, :referer, :string

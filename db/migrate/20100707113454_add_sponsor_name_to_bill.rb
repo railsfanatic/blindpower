@@ -3,9 +3,12 @@ class AddSponsorNameToBill < ActiveRecord::Migration
     add_column :bills, :sponsor_name, :string
     
     Bill.reset_column_information
-    Bill.all.each do |bill|
-      unless bill.sponsor.nil?
-        Bill.update_all(["sponsor_name = ?", bill.sponsor.last_name], ["id = ?", bill.id])
+    
+    say_with_time "Updating bill sponsor_name cache column..." do
+      Bill.all.each do |bill|
+        unless bill.sponsor.nil?
+          Bill.update_all(["sponsor_name = ?", bill.sponsor.last_name], ["id = ?", bill.id])
+        end
       end
     end
   end

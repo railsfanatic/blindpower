@@ -33,7 +33,7 @@
 					<li><%= link_to "U.S. Legislation", bills_path %></li>
 					<li><%= link_to "Suggestions", suggestions_path %></li>
 				<% if current_user %>
-					<li><%= link_to "Edit Profile", edit_user_path(:current) %></li>
+					<li><%= link_to "Edit Profile", edit_user_path(current_user) %></li>
 					<li><%= link_to "Logout", logout_path %></li>
 				
 					<% if app_admin? %>

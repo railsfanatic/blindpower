@@ -1,4 +1,4 @@
-class AddCountsToLegislator < ActiveRecord::Migration
+class RollupThree < ActiveRecord::Migration
   def self.up
     # migration rollup 3
     # from schema.rb version 20100707121702

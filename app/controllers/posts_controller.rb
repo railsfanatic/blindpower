@@ -9,9 +9,10 @@ class PostsController < ApplicationController
   end
   
   def show
-    if current_user
-      # need to fix this later!!!!!!!!
+    if admin?
       @post = Post.find(params[:id])
+    elsif current_user
+      @post = Post.find(params[:id], :joins => :user, :conditions => ["posts.user_id = ? OR users.author = ?", current_user.id, true])
     else
       @post = Post.published.find(params[:id])
     end
@@ -26,7 +27,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.new(params[:post])
     if @post.save
       flash[:notice] = "Thanks for posting!"
-      redirect_to @post
+      redirect_to :back
     else
       render :action => 'new'
     end
@@ -36,7 +37,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     unless admin? || @post.user == current_user
       flash[:error] = "Unauthorized!"
-      redirect_to @post
+      redirect_to posts_path
     end
   end
   

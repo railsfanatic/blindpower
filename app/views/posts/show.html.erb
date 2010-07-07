@@ -8,10 +8,12 @@
 	<%= markdown h(@post.body) %>
 </p>
 
+<% unless @post.tags.empty? %>
 <p>
-	<strong>Keywords:</strong>
-	<%= @post.tags.join(", ") %>
+	<strong><%= pluralize(@post.tags.count, "Keyword").split.second %>:</strong>
+	<%= @post.tags.collect(&:name).join(", ") %>
 </p>
+<% end %>
 
 <% unless @post.comments.empty? %>
   <h4 id="comments_count">

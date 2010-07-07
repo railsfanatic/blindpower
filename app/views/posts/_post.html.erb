@@ -3,7 +3,7 @@
 	(<%= post.user.username %>)
 	<strong><%= link_to post.title, post %></strong>
 	<div>
-	<%= markdown h(truncate(post.body, 500, '...')) %>
+	<%= markdown h(post.body.truncate_words 30) %>
 	</div>
 	<div>
 		<%= link_to "#{post.comments.count} comments.", post %>

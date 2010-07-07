@@ -1,0 +1,17 @@
+<% if bills.empty? %>
+	(None)
+<% else %>
+	<table style="width: 100%">
+		<tr>
+			<th><%= sort_link "Number", :bill_number, sorting %></th>
+			<th><%= sort_link "Title", :short_title, sorting %></th>
+			<th><%= sort_link "Last Action", :last_action_on, sorting %></th>
+			<th><%= sort_link "Status", :state, sorting %></th>
+			<th><%= sort_link "Sponsor", :sponsor_name, sorting %></th>
+			<th><%= sort_link "Cosp.", :cosponsors_count, sorting %></th>
+			<th><%= sort_link "Rating", :average_rating, sorting %></th>
+			<th><%= sort_link "Refs", :blind_count, sorting %></th>
+		</tr>
+	<%= render bills %>
+	</table>
+<% end %>

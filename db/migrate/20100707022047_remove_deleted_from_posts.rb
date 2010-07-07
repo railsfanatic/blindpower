@@ -4,11 +4,9 @@ class RemoveDeletedFromPosts < ActiveRecord::Migration
     remove_column :posts, :deleted_by
     remove_column :bills, :deleted_by
     remove_column :posts, :deleted_at
-    remove_column :bills, :deleted_at
   end
 
   def self.down
-    add_column :bills, :deleted_at, :datetime
     add_column :posts, :deleted_at, :datetime
     add_column :bills, :deleted_by, :integer
     add_column :posts, :deleted_by, :integer

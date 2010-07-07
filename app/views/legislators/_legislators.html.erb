@@ -1,0 +1,16 @@
+<% if legislators.empty? %>
+	(None)
+<% else %>
+	<table style="width: 100%">
+		<tr>
+			<th><%= sort_link "Title", :title %></th>
+			<th><%= sort_link "Last Name", :last_name %></th>
+			<th><%= sort_link "First Name", :first_name  %></th>
+			<th><%= sort_link "Party", :party %></th>
+			<th><%= sort_link "Sponsored", :sponsored_count %></th>
+			<th><%= sort_link "Cosponsored", :cosponsored_count %></th>
+			<th><%= sort_link "State &amp; District", :state %></th>
+		</tr>
+	<%= render legislators %>
+	</table>
+<% end %>

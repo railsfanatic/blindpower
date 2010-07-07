@@ -1,0 +1,14 @@
+	<tr class="<%= cycle('gray', '') %>">
+		<td class="nowrap"><%= link_to bill.full_number, bill %></td>
+		<td><%= bill.title.truncate_words(20) %></td>
+		<td class="nowrap"><%= bill.last_action_on.strftime("%m/%d/%y") %></td>
+		<td><%= bill.state.gsub(":", ": ").downcase %></td>
+		<td class="nowrap"><%= link_to bill.sponsor_name, bill.sponsor %></td>
+		<td class="nowrap"><%= bill.cosponsors.count %></td>
+		<td class="nowrap"><%= bill.rating.zero? ? "N/A" : bill.rating %></td>
+		<td class="nowrap"><%= bill.blind_count %> in<br /><%= number_with_delimiter(bill.text_word_count) %></td>
+		<% if app_admin? %>
+		<td><%= link_to "Hide", hide_bill_path(bill), :method => :put, :confirm => "Hide this Bill? It will be ignored by the system." %></td>
+		<td><%= link_to "Destroy", bill, :method => :delete, :confirm => "Destroy this Bill? It may be put back on the next cron search." %></td>
+		<% end -%>
+	</tr>

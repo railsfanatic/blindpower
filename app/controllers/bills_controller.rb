@@ -33,7 +33,7 @@ class BillsController < ApplicationController
       flash[:notice] = "Successfully added Bill."
       redirect_to bills_path
     else
-      render :action => 'new'
+      render 'new'
     end
   end
   
@@ -43,7 +43,7 @@ class BillsController < ApplicationController
     if @bill.update_attribute(:hidden, false)
       flash[:notice] = "Successfully updated bill."
     end
-    redirect_to @bill
+    redirect_to bills_path
   end
   
   def hide

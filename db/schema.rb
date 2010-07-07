@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100707073942) do
+ActiveRecord::Schema.define(:version => 20100707121702) do
 
   create_table "bills", :force => true do |t|
     t.string   "drumbone_id"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20100707073942) do
     t.date     "text_updated_on"
     t.integer  "visually_impaired_count"
     t.boolean  "hidden",                  :default => false
+    t.string   "sponsor_name"
   end
 
   add_index "bills", ["drumbone_id"], :name => "index_bills_on_guid"
@@ -77,6 +78,8 @@ ActiveRecord::Schema.define(:version => 20100707073942) do
     t.string    "party"
     t.timestamp "created_at"
     t.timestamp "updated_at"
+    t.integer   "sponsored_count",   :default => 0
+    t.integer   "cosponsored_count", :default => 0
   end
 
   add_index "legislators", ["bioguide_id"], :name => "index_legislators_on_bioguide_id"

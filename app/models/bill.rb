@@ -11,6 +11,7 @@ class Bill < ActiveRecord::Base
   # callbacks
   before_validation_on_create :set_ids
   before_save :update_bill
+  after_save :update_legislator_counts
   
   # rateable
   acts_as_rateable
@@ -45,7 +46,7 @@ class Bill < ActiveRecord::Base
   end
   
   def title
-    "#{full_number}: #{short_title}"
+    short_title.blank? ? official_title : short_title
   end
   
   def full_number
@@ -59,6 +60,10 @@ class Bill < ActiveRecord::Base
       when 'sj' then 'S.J.Res.'
       when 'sc' then 'S.C.Res.'
 		end + ' ' + bill_number.to_s
+  end
+  
+  def full_title
+    "#{full_number}: #{title}"
   end
   
   def paragraphs
@@ -120,12 +125,23 @@ class Bill < ActiveRecord::Base
     end
   end
   
-  def update_bill
+  def update_legislator_counts
+    debugger
+    unless self.sponsor.nil?
+      self.sponsor.update_attribute(:sponsored_count, self.sponsor.sponsored.length)
+    end
+    cosponsors.each do |cosponsor|
+      cosponsor.update_attribute(:cosponsored_count, cosponsor.cosponsored.length)
+    end
     if self.hidden?
-      self.bill_html = nil
-      self.cosponsors = []
       self.sponsor = nil
-    else
+      self.cosponsors = []
+      self.bill_html = nil
+    end
+  end
+  
+  def update_bill
+    unless self.hidden?
       drumbone = Drumbone::Bill.find :bill_id => self.drumbone_id
       if drumbone
         self.short_title = drumbone.short_title
@@ -152,7 +168,7 @@ class Bill < ActiveRecord::Base
             :govtrack_id => drumbone.sponsor.govtrack_id
           )
         end
-      
+        
         if drumbone.cosponsors
           self.cosponsors = []
           drumbone.cosponsors.each do |cosponsor|
@@ -177,7 +193,8 @@ class Bill < ActiveRecord::Base
           self.text_updated_on = Date.today
           logger.info "Updated Bill Text for #{self.drumbone_id}"
         end
-      
+        
+        self.sponsor_name = self.sponsor.last_name
         self.cosponsors_count = self.cosponsors.count
         self.text_word_count = self.bill_html.to_s.word_count
         self.summary_word_count = self.summary.to_s.word_count

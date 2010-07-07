@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :legislators
+
   map.resources :pages
   map.static "static/:permalink", :controller => "pages", :action => "show"
   

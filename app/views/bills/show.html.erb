@@ -1,4 +1,4 @@
-<% title @bill.short_title %>
+<% title @bill.full_title %>
 
 <p>
   <strong>Congress:</strong>
@@ -6,7 +6,7 @@
 </p>
 <p>
   <strong>Title:</strong>
-  <%=h @bill.title %>
+  <%=h @bill.full_title %>
 </p>
 <p>
   <strong>Official Title:</strong>
@@ -24,8 +24,8 @@
   <%= truncate h(@bill.summary), :length => 350, :omission => summarize_link(@bill) %>
 </p>
 <p>
-  <strong>Sponsor:</strong>
-  <%=h @bill.sponsor ? @bill.sponsor.full_name : nil %>
+  <strong>Sponsored by:</strong>
+	<%= link_to h(@bill.sponsor.full_title), @bill.sponsor %>
 </p>
 <p>
   <strong>Co-sponsored by:</strong>
@@ -77,7 +77,7 @@
 	<tr>
 		<th><%= state.to_us_state %></th>
 		<td>
-			<%=h cosponsors.collect(&:full_name).sort.join(", ") %>
+			<%= links_to_legislators(cosponsors) %>
 		</td>
 	</tr>
 <% end %>

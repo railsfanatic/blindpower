@@ -1,0 +1,6 @@
+<% title "Legislators" %>
+
+<%= page_entries_info @legislators %>
+<% paginated_section @legislators do %>
+	<%= render :partial => "legislators", :locals => { :legislators => @legislators } %>
+<% end %>

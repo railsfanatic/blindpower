@@ -1,0 +1,35 @@
+<% title @legislator.full_title %>
+
+<p>
+  <strong>Full Name:</strong>
+	<%=h @legislator.full_name %>
+</p>
+<p>
+  <strong>Chamber:</strong>
+  <%=h @legislator.chamber %>
+</p>
+<p>
+  <strong>Constituency:</strong>
+  <%=h @legislator.district.ordinalize %> District of 
+  <%=h @legislator.state.to_us_state %>
+</p>
+<p>
+  <strong>Political Party:</strong>
+  <%=h @legislator.party_name %>
+</p>
+<p>
+  <strong>Biographical Info:</strong>
+  <%= link_to "Govtrack Link", "http://www.govtrack.us/congress/person.xpd?id=#{@legislator.govtrack_id}", :target => "_blank" %> |
+  <%= link_to "Bioguide Link", "http://bioguide.congress.gov/scripts/biodisplay.pl?index=#{@legislator.bioguide_id}", :target => "_blank" %>
+</p>
+<p>
+  <strong>Blind-related Bills Sponsored:</strong>
+</p>
+	<%= render :partial => "bills/bills", :locals => { :bills => @legislator.sponsored, :sorting => false } %>
+<p>
+  <strong>Blind-related Bills Cosponsored:</strong>
+</p>
+<%= render :partial => "bills/bills", :locals => { :bills => @legislator.cosponsored, :sorting => false } %>
+<p>
+  <%= link_to "View All", legislators_path %>
+</p>

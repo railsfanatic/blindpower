@@ -1,0 +1,9 @@
+	<tr class="<%= cycle('gray', '') %>">
+		<td><%= link_to legislator.title, legislator %></td>
+		<td><%= link_to legislator.last_name, legislator %></td>
+		<td><%= link_to legislator.first_name, legislator %></td>
+		<td><%= legislator.party %></td>
+		<td><%= legislator.sponsored_count %></td>
+		<td><%= legislator.cosponsored_count %></td>
+		<td><%= "#{legislator.state_name} #{legislator.district.nonzero?}" %></td>
+	</tr>

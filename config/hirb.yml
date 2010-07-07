@@ -19,8 +19,9 @@
   Bill:
     :options:
       :fields:
+      - id
       - full_number
       - title
       - last_action_on
       - state
-      - ignored?
+      - hidden?

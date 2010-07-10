@@ -126,7 +126,6 @@ class Bill < ActiveRecord::Base
   end
   
   def update_legislator_counts
-    debugger
     unless self.sponsor.nil?
       self.sponsor.update_attribute(:sponsored_count, self.sponsor.sponsored.length)
     end

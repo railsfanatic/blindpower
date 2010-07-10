@@ -10,7 +10,7 @@ describe LegislatorsController do
   end
   
   it "show action should render show template" do
-    get :show, :id => Legislator.first
+    get :show, :id => Legislator.create(:first_name => "Bernie", :last_name => "Sanders")
     response.should render_template(:show)
   end
 end

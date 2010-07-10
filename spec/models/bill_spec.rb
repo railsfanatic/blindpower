@@ -13,16 +13,17 @@ describe Bill do
   
   it "should clear out bill_html, sponsor, and cosponsors on deletion" do
     bill = Bill.create!(:bill_type => 'hr', :bill_number => 1034, :congress => 111)
-    bill.update_attribute(:deleted_at, Time.now)
+    bill.hidden = true
+    bill.save
     bill.bill_html.should be_nil
     bill.sponsor.should be_nil
     bill.cosponsors.count.should == 0
   end
   
-  it "should restore all original info on deleted_at = nil" do
+  it "should restore all original info on hidden = false" do
     bill = Bill.create!(:bill_type => 'hr', :bill_number => 1034, :congress => 111)
-    bill.update_attribute(:deleted_at, Time.now)
-    bill.update_attribute(:deleted_at, nil)
+    bill.hidden = false
+    bill.save
     bill.govtrack_id.should == "hr111-1034"
     bill.drumbone_id.should == "hres1034-111"
     bill.official_title.should =~ /Braille/

@@ -10,8 +10,8 @@
 </p>
 <p>
   <strong>Constituency:</strong>
-  <%=h @legislator.district.ordinalize %> District of 
-  <%=h @legislator.state.to_us_state %>
+  <%=h @legislator.district.nil? ? "" : @legislator.district.ordinalize + " District of" %>
+  <%=h @legislator.state.to_s.to_us_state %>
 </p>
 <p>
   <strong>Political Party:</strong>
